@@ -11,6 +11,8 @@ int main()
     /* Initialize data client */
     data_global_init();
 
+    window->setFramerateLimit(25);
+
     while (window->isOpen())
     {
         sf::Event event;
@@ -26,7 +28,7 @@ int main()
         /* Draw Stuff */
         painter.paint();
 
-        /* Display drawn stuf */
+        /* Sleep */
         window->display();
     }
 

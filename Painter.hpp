@@ -25,6 +25,11 @@ class Painter {
     sf::Texture _currentBigTexture;
     sf::Sprite _currentBigSprite;
 
+    /** Main texts */
+    sf::Text _eventNameText;
+
+    sf::Font _font;
+
     void loadBigImage(Event event);
 
     public:
