@@ -3,12 +3,13 @@
 #include <curl/curl.h>
 #include <string>
 #include <vector>
+#include "config.h"
 
 void data_global_init();
 void data_global_clean();
 
 inline std::string imageFilename(std::string url) {
-    return "images/" + url.substr(url.find_last_of("/") + 1);
+    return IMAGES_DIR + url.substr(url.find_last_of("/") + 1);
 }
 
 struct Body {
@@ -28,7 +29,7 @@ struct Body {
         if (json["image_url"] != nullptr) {
             imageUrl = json["image_url"];
         } else {
-            imageUrl = "";
+            imageUrl = STRING_EMPTY;
         }
     }
 };
@@ -65,7 +66,7 @@ struct Event {
         }
 
         // Save filename
-        if (imageUrl != "") {
+        if (imageUrl != STRING_EMPTY) {
             imageFileName = imageFilename(imageUrl);
         }
     }

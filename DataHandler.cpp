@@ -98,14 +98,14 @@ DataHandler::DataHandler() {}
 DataHandler::~DataHandler() {}
 
 std::vector<Event> DataHandler::getEvents() {
-    auto eventsString = request("https://insti.app/api/events");
+    auto eventsString = request(EVENTS_URL);
     json eventsJson = json::parse(*eventsString.get())["data"];
 
     std::vector<Event> eventVector;
     for (auto eventJson : eventsJson) {
         Event event(eventJson);
 
-        if (event.imageUrl != "") {
+        if (event.imageUrl != STRING_EMPTY) {
             if (!file_exists(event.imageFileName)) {
                 requestImage(event.imageUrl);
             }

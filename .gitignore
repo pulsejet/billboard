@@ -1,0 +1,7 @@
+include
+curl
+SMFL
+*.exe
+*.dll
+images
+*.jpg

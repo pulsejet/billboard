@@ -1,5 +1,6 @@
 #include "Painter.hpp"
 #include <iostream>
+#include "config.h"
 
 /** Load texture from path */
 sf::Texture * getImageTexture(std::string path) {
@@ -47,7 +48,7 @@ Painter::Painter(sf::RenderWindow * window) {
 void Painter::paint() {
     _window->draw(*_currentBigSprite);
 
-    if (_clock.getElapsedTime().asSeconds() > 1) {
+    if (_clock.getElapsedTime().asSeconds() > TIME_DELAY) {
         /* Reset the clock */
         _clock.restart();
 
