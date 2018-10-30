@@ -3,6 +3,7 @@
 #include <curl/curl.h>
 #include <string>
 #include <vector>
+#include <SFML/Graphics.hpp>
 #include "config.h"
 
 void data_global_init();
@@ -44,6 +45,8 @@ struct Event {
     std::string endTime;
     std::string imageFileName;
     std::vector<Body> bodies;
+
+    sf::Image bigImage;
 
     Event(nlohmann::json json) {
         id = json["id"];

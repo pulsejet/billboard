@@ -32,6 +32,7 @@ bool requestImage(std::string url) {
     CURL * curl;
     CURLcode imgresult;
     FILE *fp = NULL;
+    bool success = false;
 
     curl = curl_easy_init();
     if (!curl) {
@@ -52,6 +53,8 @@ bool requestImage(std::string url) {
     imgresult = curl_easy_perform(curl);
     if (imgresult) {
         std::cout << imgresult << "Cannot grab the image!\n";
+    } else {
+        success = file_exists(imageFilename(url).c_str());
     }
 
     // Clean up the resources
@@ -59,6 +62,8 @@ bool requestImage(std::string url) {
 
     // Close the file
     fclose(fp);
+
+    return success;
 }
 
 std::unique_ptr<std::string> request(std::string url) {
@@ -106,8 +111,8 @@ std::vector<Event> DataHandler::getEvents() {
         Event event(eventJson);
 
         if (event.imageUrl != STRING_EMPTY) {
-            if (!file_exists(event.imageFileName)) {
-                requestImage(event.imageUrl);
+            if (file_exists(event.imageFileName) || requestImage(event.imageUrl)) {
+                event.bigImage.loadFromFile(event.imageFileName);
             }
         }
 

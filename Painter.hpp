@@ -22,8 +22,8 @@ class Painter {
     int _currentEventIndex = 0;
 
     /** Big image being shown */
-    sf::Texture * _currentBigTexture;
-    sf::Sprite * _currentBigSprite;
+    sf::Texture _currentBigTexture;
+    sf::Sprite _currentBigSprite;
 
     void loadBigImage(Event event);
 
