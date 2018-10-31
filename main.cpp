@@ -5,7 +5,11 @@
 int main()
 {
     /* Make window */
-    sf::RenderWindow * window = new sf::RenderWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Noticeboard!");
+    sf::RenderWindow * window = new sf::RenderWindow(
+        sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
+        WINDOW_TITLE,
+        ((FULLSCREEN) ? sf::Style::Fullscreen : sf::Style::Default)
+    );
     Painter painter(window);
 
     /* Initialize data client */
