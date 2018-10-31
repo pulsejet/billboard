@@ -2,15 +2,21 @@
 #include <iostream>
 #include "config.h"
 
+/** Scale sprite to fill screen */
+void scaleCenterSpriteFull(sf::Sprite& sprite, sf::Image& image, float maxHeight = 1.0f) {
+    float scaleFactor = ((float) WINDOW_HEIGHT / (float) image.getSize().y) * maxHeight;
+    float xTransform = ((float) WINDOW_WIDTH - (float) image.getSize().x * scaleFactor) / 2.0;
+    sprite.setScale(scaleFactor, scaleFactor);
+    sprite.setPosition(xTransform, 0);
+}
+
 void Painter::loadBigImage(Event event) {
     /* Load big image */
     _currentBigTexture.loadFromImage(event.bigImage);
     _currentBigTexture.setSmooth(true);
     _currentBigSprite.setTexture(_currentBigTexture, true);
-    float scaleFactor = (float) WINDOW_HEIGHT / (float) event.bigImage.getSize().y;
-    float xTransform = ((float) WINDOW_WIDTH - (float) event.bigImage.getSize().x * scaleFactor) / 2.0;
-    _currentBigSprite.setScale(scaleFactor, scaleFactor);
-    _currentBigSprite.setPosition(xTransform, 0);
+
+    scaleCenterSpriteFull(_currentBigSprite, event.bigImage, 0.9f);
 
     /* Load texts */
     const float height = WINDOW_HEIGHT / 18.0;
@@ -32,6 +38,15 @@ Painter::Painter(sf::RenderWindow * window) {
         std::cout << "Could not load font" << std::endl;
     }
 
+    /* Load overlay gradient */
+    sf::Image overlayImage;
+    if (overlayImage.loadFromFile("fade.png")) {
+        _overlayGradientTexture.loadFromImage(overlayImage);
+        _overlayGradientTexture.setSmooth(true);
+        _overlayGradient.setTexture(_overlayGradientTexture);
+        scaleCenterSpriteFull(_overlayGradient, overlayImage);
+    }
+
     /* Skip events with no image */
     while (_events[_currentEventIndex++].imageUrl == STRING_EMPTY);
 
@@ -41,6 +56,7 @@ Painter::Painter(sf::RenderWindow * window) {
 /** Paint the window. Call this every iteration. */
 void Painter::paint() {
     _window->draw(_currentBigSprite);
+    _window->draw(_overlayGradient);
     _window->draw(_eventNameText);
 
     if (_clock.getElapsedTime().asSeconds() > TIME_DELAY) {

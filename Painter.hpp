@@ -24,6 +24,8 @@ class Painter {
     /** Big image being shown */
     sf::Texture _currentBigTexture;
     sf::Sprite _currentBigSprite;
+    sf::Texture _overlayGradientTexture;
+    sf::Sprite _overlayGradient;
 
     /** Main texts */
     sf::Text _eventNameText;
