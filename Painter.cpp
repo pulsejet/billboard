@@ -117,7 +117,9 @@ void Painter::paint() {
 
         /* Load new image */
         if (++_currentEventIndex >= _events.size()) _currentEventIndex = 0;
-        while (_events[_currentEventIndex].imageUrl == STRING_EMPTY) {
+        while (_events[_currentEventIndex].imageUrl == STRING_EMPTY ||
+               _events[_currentEventIndex].weight < WEIGHT_THRESHOLD
+        ) {
             _currentEventIndex++;
             if (_currentEventIndex >= _events.size()) _currentEventIndex = 0;
         };

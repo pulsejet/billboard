@@ -5,6 +5,7 @@
 #define WINDOW_HEIGHT 720
 #define MAIN_FONT "fonts/segoeui.ttf"
 #define TITLE_FONT "fonts/Roboto-Light.ttf"
+#define WEIGHT_THRESHOLD 800
 
 // Common
 #define STRING_EMPTY ""

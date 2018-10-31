@@ -44,6 +44,7 @@ struct Event {
     std::string startTime;
     std::string endTime;
     std::string imageFileName;
+    int weight;
     std::string venueStr = STRING_EMPTY;
     std::vector<Body> bodies;
 
@@ -56,6 +57,7 @@ struct Event {
         description = json["description"];
         startTime = json["start_time"];
         endTime = json["end_time"];
+        weight = json["weight"];
 
         // Get bodies
         for (auto body : json["bodies"]) {
