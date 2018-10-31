@@ -6,9 +6,22 @@
 #include "config.h"
 
 /** Scale sprite to fill screen */
-void scaleCenterSpriteFull(sf::Sprite& sprite, sf::Image& image, float maxHeight = 1.0f) {
-    float scaleFactor = ((float) WINDOW_HEIGHT / (float) image.getSize().y) * maxHeight;
-    float xTransform = ((float) WINDOW_WIDTH - (float) image.getSize().x * scaleFactor) / 2.0;
+void scaleCenterSpriteFull(sf::Sprite& sprite, sf::Image& image, float maxHeight = 1.0f, bool fullHeight = false) {
+    float sx = image.getSize().x;
+    float sy = image.getSize().y;
+
+    float scaleFactorY = ((float) WINDOW_HEIGHT / sy);
+    float scaleFactorX = ((float) WINDOW_WIDTH / sx);
+
+    float scaleFactor = 1.0;
+
+    if (scaleFactorY > scaleFactorX && !fullHeight) {
+        scaleFactor = scaleFactorX;
+    } else {
+        scaleFactor = scaleFactorY * maxHeight;
+    }
+
+    float xTransform = ((float) WINDOW_WIDTH - sx * scaleFactor) / 2.0;
     sprite.setScale(scaleFactor, scaleFactor);
     sprite.setPosition(xTransform, 0);
 }
@@ -95,7 +108,7 @@ Painter::Painter(sf::RenderWindow * window) {
         _overlayGradientTexture.loadFromImage(overlayImage);
         _overlayGradientTexture.setSmooth(true);
         _overlayGradient.setTexture(_overlayGradientTexture);
-        scaleCenterSpriteFull(_overlayGradient, overlayImage);
+        scaleCenterSpriteFull(_overlayGradient, overlayImage, 1.0f, true);
     }
 
     /* Skip events with no image */
