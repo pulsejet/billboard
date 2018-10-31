@@ -29,6 +29,7 @@ class Painter {
 
     /** Main texts */
     sf::Text _eventNameText;
+    sf::Text _eventTimeText;
 
     sf::Font _font;
 

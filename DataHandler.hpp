@@ -44,6 +44,7 @@ struct Event {
     std::string startTime;
     std::string endTime;
     std::string imageFileName;
+    std::string venueStr = STRING_EMPTY;
     std::vector<Body> bodies;
 
     sf::Image bigImage;
@@ -71,6 +72,14 @@ struct Event {
         // Save filename
         if (imageUrl != STRING_EMPTY) {
             imageFileName = imageFilename(imageUrl);
+        }
+
+        // Calculate venue string
+        for (auto x : json["venues"]) {
+            if (venueStr != STRING_EMPTY) {
+                venueStr += ", ";
+            }
+            venueStr += x["short_name"];
         }
     }
 };
