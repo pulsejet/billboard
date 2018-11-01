@@ -12,4 +12,7 @@
 #define TITLE_FONT "fonts/Roboto-Light.ttf"
 #define WEIGHT_THRESHOLD 800
 
+#define ANIMATION_ENABLED true
+#define EVENT_ANIMATION_SPEED 11
+
 #endif
