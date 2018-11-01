@@ -5,7 +5,7 @@
 
 class Animation {
     private:
-    sf::Sprite * _sprite;
+    sf::Transformable * _sprite;
 
     int _baseX;
     int _baseY;
@@ -17,8 +17,8 @@ class Animation {
     sf::Clock * _clock;
 
     public:
-    Animation(sf::Sprite * sprite, sf::Clock * _clock);
-    Animation(sf::Sprite * sprite, sf::Clock * _clock, int baseX, int baseY);
+    Animation(sf::Transformable * sprite, sf::Clock * _clock);
+    Animation(sf::Transformable * sprite, sf::Clock * _clock, int baseX, int baseY);
 
     /** Set base coordinates to current */
     void rebase();

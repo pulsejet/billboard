@@ -5,14 +5,14 @@
 
 #include <iostream>
 
-Animation::Animation(sf::Sprite * sprite, sf::Clock * clock, int baseX, int baseY) {
+Animation::Animation(sf::Transformable * sprite, sf::Clock * clock, int baseX, int baseY) {
     _sprite = sprite;
     _clock = clock;
     _baseX = baseX;
     _baseY = baseY;
 }
 
-Animation::Animation(sf::Sprite * sprite, sf::Clock * clock) : Animation(sprite, clock, 0, 0) {};
+Animation::Animation(sf::Transformable * sprite, sf::Clock * clock) : Animation(sprite, clock, 0, 0) {};
 
 void Animation::rebase() {
     _baseX = (int) _sprite->getPosition().x;
