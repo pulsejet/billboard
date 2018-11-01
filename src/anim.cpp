@@ -39,3 +39,16 @@ void Animation::animate() {
 
     _sprite->setPosition(finalX, finalY);
 }
+
+AnimationGroup::AnimationGroup(std::vector<sf::Transformable*> sprites, sf::Clock * _clock) {
+    for (auto sprite : sprites) {
+        animations.push_back(new Animation(sprite, _clock));
+    }
+}
+
+#define LOOP_A for (auto a : animations)
+void AnimationGroup::rebase() { LOOP_A a->rebase(); }
+void AnimationGroup::set_lcr(int duration, int speed) { LOOP_A a->set_lcr(duration, speed); }
+void AnimationGroup::animate() { LOOP_A a->animate(); }
+AnimationGroup::~AnimationGroup() { LOOP_A if (a) delete a; }
+#undef LOOP_A
