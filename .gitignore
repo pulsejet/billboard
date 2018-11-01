@@ -1,10 +1,10 @@
 include
 curl
 SMFL
-*.exe
-*.dll
+bin
 *.o
 *.d
 images
 *.jpg
 fonts
+src/xxd

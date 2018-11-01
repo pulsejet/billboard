@@ -20,7 +20,7 @@
 ##==========================================================================
 
 # The executable file name. Must be specified.
-PROGRAM                = tv
+PROGRAM                = bin/tv
 
 # C and C++ program compilers. Un-comment and specify for cross-compiling if needed.
 #CC                    = gcc
@@ -212,6 +212,7 @@ ifeq ($(SRC_CXX),)              # C program
 	@echo Type ./$@ to execute the program.
 else
 	@echo Generating $@
+	@mkdir -p $(@D)
 	$(LINK.cxx) $(OBJS) $(EXTRA_LDFLAGS) -o $@
 	@echo Type ./$@ to execute the program.
 endif
