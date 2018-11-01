@@ -1,22 +1,8 @@
-#include "DataHandler.hpp"
-#include <sys/stat.h>
-#include <iostream>
-#include <stdexcept>
-using json = nlohmann::json;
+#include <curl/curl.h>
+#include "http.hpp"
+#include "common.hpp"
 
-void data_global_init() {
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-}
-
-void data_global_clean() {
-    curl_global_cleanup();
-}
-
-inline bool file_exists (const std::string& name) {
-  struct stat buffer;
-  return (stat (name.c_str(), &buffer) == 0);
-}
-
+/** Callback for getting bytes from request */
 std::size_t callback(
     const char* in,
     std::size_t size,
@@ -28,6 +14,7 @@ std::size_t callback(
     return totalBytes;
 }
 
+/** Request and save an image to common location */
 bool requestImage(std::string url) {
     CURL * curl;
     CURLcode imgresult;
@@ -66,7 +53,8 @@ bool requestImage(std::string url) {
     return success;
 }
 
-std::unique_ptr<std::string> request(std::string url) {
+/** Get response of an HTTP request as string ptr */
+std::unique_ptr<std::string> requestStr(std::string url) {
     // Init curl
     CURL * curl = curl_easy_init();
     if (!curl) {
@@ -91,32 +79,8 @@ std::unique_ptr<std::string> request(std::string url) {
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
     curl_easy_cleanup(curl);
 
-    if (httpCode == 200)
-    {
+    if (httpCode == 200) {
         return httpData;
     }
     return NULL;
-}
-
-DataHandler::DataHandler() {}
-
-DataHandler::~DataHandler() {}
-
-std::vector<Event> DataHandler::getEvents() {
-    auto eventsString = request(EVENTS_URL);
-    json eventsJson = json::parse(*eventsString.get())["data"];
-
-    std::vector<Event> eventVector;
-    for (auto eventJson : eventsJson) {
-        Event event(eventJson);
-
-        if (event.imageUrl != STRING_EMPTY) {
-            if (file_exists(event.imageFileName) || requestImage(event.imageUrl)) {
-                event.bigImage.loadFromFile(event.imageFileName);
-            }
-        }
-
-        eventVector.push_back(event);
-    }
-    return eventVector;
 }

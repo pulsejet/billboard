@@ -1,71 +1,7 @@
 #include <iostream>
-#include <ctime>
-#include <sstream>
-#include <iomanip>
-#include "Painter.hpp"
 #include "config.h"
-
-/** Scale sprite to fill screen */
-void scaleCenterSpriteFull(sf::Sprite& sprite, sf::Image& image, float maxHeight = 1.0f, bool fullHeight = false) {
-    float sx = image.getSize().x;
-    float sy = image.getSize().y;
-
-    float scaleFactorY = ((float) WINDOW_HEIGHT / sy);
-    float scaleFactorX = ((float) WINDOW_WIDTH / sx);
-
-    float scaleFactor = 1.0;
-
-    if (scaleFactorY > scaleFactorX && !fullHeight) {
-        scaleFactor = scaleFactorX;
-    } else {
-        scaleFactor = scaleFactorY * maxHeight;
-    }
-
-    float xTransform = ((float) WINDOW_WIDTH - sx * scaleFactor) / 2.0;
-    sprite.setScale(scaleFactor, scaleFactor);
-    sprite.setPosition(xTransform, 0);
-}
-
-tm getTime(std::string dateStr) {
-    int y,M,d,h,m;
-    float s;
-    int tzh = 0, tzm = 0;
-    if (6 < sscanf(dateStr.c_str(), "%d-%d-%dT%d:%d:%f%d:%dZ", &y, &M, &d, &h, &m, &s, &tzh, &tzm)) {
-        if (tzh < 0) {
-        tzm = -tzm;    // Fix the sign on minutes.
-        }
-    }
-
-    tm time;
-    time.tm_year = y;
-    time.tm_mon = M - 1;
-    time.tm_mday = d;
-    time.tm_hour = h;
-    time.tm_min = m;
-    time.tm_sec = (int) s;
-
-    return time;
-}
-
-std::string monthNames[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-
-std::string getSubtitle(Event event) {
-    std::stringstream ss;
-
-    tm startTime = getTime(event.startTime);
-
-    std::string st[] = { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
-
-    ss << std::setfill('0') << std::setw(2) << startTime.tm_hour <<  ":" << std::setfill('0') << std::setw(2) << startTime.tm_min;
-    ss << " | ";
-    ss << startTime.tm_mday << st[startTime.tm_mday % 10] << " " << monthNames[startTime.tm_mon];
-
-    if (event.venueStr != STRING_EMPTY) {
-        ss << " | " << event.venueStr;
-    }
-
-    return ss.str();
-}
+#include "transforms.hpp"
+#include "painter.hpp"
 
 void Painter::loadBigImage(Event event) {
     /* Load big image */
@@ -86,7 +22,7 @@ void Painter::loadBigImage(Event event) {
 
     height = WINDOW_HEIGHT / 22.0;
     _eventTimeText.setFont(_font);
-    _eventTimeText.setString(getSubtitle(event));
+    _eventTimeText.setString(event.getSubtitle());
     _eventTimeText.setCharacterSize(height);
     _eventTimeText.setFillColor(sf::Color::White);
     _eventTimeText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 4.5);
@@ -95,7 +31,7 @@ void Painter::loadBigImage(Event event) {
 /** Constructor */
 Painter::Painter(sf::RenderWindow * window) {
     _window = window;
-    _events = _dataHandler.getEvents();
+    _events = _data.getEvents();
 
     /* Load font */
     if (!_font.loadFromFile(TITLE_FONT)) {

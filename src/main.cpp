@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Painter.hpp"
+#include "painter.hpp"
 #include "config.h"
 
 int main()

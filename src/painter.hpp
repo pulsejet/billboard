@@ -1,16 +1,19 @@
+#ifndef _INSTIAPP_PAINTER_HPP
+#define _INSTIAPP_PAINTER_HPP
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <map>
 #include <string>
 
-#include "DataHandler.hpp"
+#include "data.hpp"
 
 class Painter {
     private:
     sf::RenderWindow * _window;
 
     /** Downloader */
-    DataHandler _dataHandler;
+    Data _data;
 
     /** Memory Cache of events */
     std::vector<Event> _events;
@@ -42,3 +45,5 @@ class Painter {
     /** Paint the window */
     void paint();
 };
+
+#endif
