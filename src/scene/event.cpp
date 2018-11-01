@@ -37,10 +37,22 @@ void EventScene::loadBigImage(Event event) {
     _eventTimeText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 4.5);
 }
 
+/** Refresh events from network */
+void refreshEvents(const EventScene * scene) {
+    Data data;
+    auto loaded = data.getEvents();
+    std::lock_guard<std::mutex> guard(scene->events_mutex);
+    scene->events = loaded;
+    print_time();
+    std::cout << "Loaded " << loaded.size() << " events from network" << std::endl;
+}
+
 /** Constructor */
 void EventScene::create(sf::RenderWindow * window) {
     _window = window;
-    _events = _data.getEvents();
+
+    /* Get the events */
+    _bgThread = new std::thread(refreshEvents, this);
 
     /* Load font */
     if (!_font.loadFromMemory(&roboto_light_ttf, roboto_light_ttf_len)) {
@@ -56,17 +68,11 @@ void EventScene::create(sf::RenderWindow * window) {
         scaleCenterSpriteFull(_overlayGradient, overlayImage, 1.0f, true);
     }
 
-    /* Skip events with no image */
-    while (_events[_currentEventIndex++].imageUrl == STRING_EMPTY);
-
 #if ANIMATION_ENABLED
     /* Initialize animation */
     _bigSpriteAnim = new Animation(&_currentBigSprite, &_clock);
     _bigSpriteAnim->set_lcr(TIME_DELAY * 1000, EVENT_ANIMATION_SPEED);
 #endif
-
-    /* Load first image */
-    loadBigImage(_events[_currentEventIndex]);
 }
 
 /** Paint the window. Call this every iteration. */
@@ -77,29 +83,54 @@ void EventScene::paint() {
     _bigSpriteAnim->animate();
 #endif
 
+    /* Wait for initialization */
+    if (events.size() == 0) { return; }
+
     /* Draw everything */
     _window->draw(_currentBigSprite);
     _window->draw(_overlayGradient);
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
 
-    if (_clock.getElapsedTime().asSeconds() > TIME_DELAY) {
+    if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
+        /* Mark initialized and sync clocks */
+        if (!_initialized) {
+            _initialized = true;
+            _refresh_clock.restart();
+        }
+
         /* Reset the clock */
         _clock.restart();
 
+        /* Lock events */
+        std::lock_guard<std::mutex> guard(events_mutex);
+
         /* Load new image */
-        if (++_currentEventIndex >= _events.size()) _currentEventIndex = 0;
-        while (_events[_currentEventIndex].imageUrl == STRING_EMPTY ||
-               _events[_currentEventIndex].weight < WEIGHT_THRESHOLD
+        if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
+        while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
+               events[_currentEventIndex].weight < WEIGHT_THRESHOLD
         ) {
             _currentEventIndex++;
-            if (_currentEventIndex >= _events.size()) _currentEventIndex = 0;
+            if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
         };
 
-        loadBigImage(_events[_currentEventIndex]);
+        loadBigImage(events[_currentEventIndex]);
+    }
+
+    /* Refresh events */
+    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
+        _bgThread->join();
+        delete _bgThread;
+        _bgThread = new std::thread(refreshEvents, this);
+        _refresh_clock.restart();
     }
 }
 
 EventScene::~EventScene() {
     delete _bigSpriteAnim;
+
+    if (_bgThread) {
+        _bgThread->join();
+        delete _bgThread;
+    }
 }

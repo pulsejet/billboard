@@ -24,7 +24,7 @@ PROGRAM                = bin/tv
 
 # C and C++ program compilers. Un-comment and specify for cross-compiling if needed.
 #CC                    = gcc
-CXX                   = g++
+CXX                   = g++ -std=c++14
 # Un-comment the following line to compile C programs as C++ ones.
 CC                    = $(CXX)
 

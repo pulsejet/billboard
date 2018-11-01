@@ -4,9 +4,10 @@
 #define TIME_DELAY 6
 #define EVENTS_URL "https://insti.app/api/events"
 #define IMAGES_DIR "images/"
-#define WINDOW_WIDTH 1366
-#define WINDOW_HEIGHT 768
-#define FULLSCREEN true
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+#define FULLSCREEN false
+#define REFRESH_DURATION 10
 #define WINDOW_TITLE "Noticeboard!"
 #define WEIGHT_THRESHOLD 800
 

@@ -1,6 +1,9 @@
 #ifndef _INSTIAPP_SCENE_EVENT_HPP
 #define _INSTIAPP_SCENE_EVENT_HPP
 
+#include <thread>
+#include <mutex>
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "base.hpp"
@@ -11,14 +14,11 @@ class EventScene : public Scene {
     private:
     sf::RenderWindow * _window;
 
-    /** Downloader */
-    Data _data;
-
-    /** Memory Cache of events */
-    std::vector<Event> _events;
+    bool _initialized = false;
 
     /** Always maintain a timer */
     sf::Clock _clock;
+    sf::Clock _refresh_clock;
 
     /** Current event being displayed */
     size_t _currentEventIndex = 0;
@@ -36,6 +36,9 @@ class EventScene : public Scene {
 
     sf::Font _font;
 
+    /** Data thread */
+    std::thread * _bgThread;
+
     void loadBigImage(Event event);
 
     public:
@@ -44,6 +47,13 @@ class EventScene : public Scene {
 
     /** Paint the window */
     virtual void paint();
+
+    /** Set events to new list */
+    void setEvents(std::vector<Event> events);
+
+    /** Memory Cache of events */
+    mutable std::vector<Event> events;
+    mutable std::mutex events_mutex;
 
     /** Destructor */
     ~EventScene();
