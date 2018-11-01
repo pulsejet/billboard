@@ -11,23 +11,11 @@
 #include <sys/stat.h>
 #include <iomanip>
 #include "config.h"
+#include "assets.h"
 
 /* Commons */
 extern const std::string monthNames[12];
 extern const std::string dateSuffixes[10];
-
-/* Assets */
-extern unsigned char fade_png[];
-extern unsigned int fade_png_len;
-
-extern unsigned char roboto_light_ttf[];
-extern unsigned int roboto_light_ttf_len;
-
-extern unsigned char roboto_ttf[];
-extern unsigned char roboto_ttf_len;
-
-extern unsigned char progress_png[];
-extern unsigned int progress_png_len;
 
 /** Get standard image file path */
 inline std::string imageFilename(std::string url) {
