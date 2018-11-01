@@ -13,28 +13,17 @@ void EventScene::loadBigImage(Event event) {
     _currentBigTexture.setSmooth(true);
     _currentBigSprite.setTexture(_currentBigTexture, true);
 
+    /* Transform sprites */
     scaleCenterSpriteFull(_currentBigSprite, event.bigImage, 0.9f);
+
+    /* Set texts */
+    _eventNameText.setString(event.name);
+    _eventTimeText.setString(event.getSubtitle());
 
 #if ANIMATION_ENABLED
     /* Set base coordinates for animation */
     if (_bigSpriteAnim) _bigSpriteAnim->rebase();
 #endif
-
-    /* Load texts */
-    float height = WINDOW_HEIGHT / 18.0;
-    _eventNameText.setFont(_font);
-    _eventNameText.setString(event.name);
-    _eventNameText.setCharacterSize(height);
-    _eventNameText.setFillColor(sf::Color::White);
-    _eventNameText.setStyle(sf::Text::Bold);
-    _eventNameText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 5);
-
-    height = WINDOW_HEIGHT / 22.0;
-    _eventTimeText.setFont(_font);
-    _eventTimeText.setString(event.getSubtitle());
-    _eventTimeText.setCharacterSize(height);
-    _eventTimeText.setFillColor(sf::Color::White);
-    _eventTimeText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 4.5);
 }
 
 /** Refresh events from network */
@@ -68,6 +57,24 @@ void EventScene::create(sf::RenderWindow * window) {
         scaleCenterSpriteFull(_overlayGradient, overlayImage, 1.0f, true);
     }
 
+    /* Initialize texts */
+    float height = WINDOW_HEIGHT / 18.0;
+    _eventNameText.setFont(_font);
+
+    _eventNameText.setCharacterSize(height);
+    _eventNameText.setFillColor(sf::Color::White);
+    _eventNameText.setStyle(sf::Text::Bold);
+    _eventNameText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 5);
+
+    height = WINDOW_HEIGHT / 22.0;
+    _eventTimeText.setFont(_font);
+    _eventTimeText.setCharacterSize(height);
+    _eventTimeText.setFillColor(sf::Color::White);
+    _eventTimeText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 4.5);
+
+    /* Set initial loading message */
+    _eventNameText.setString("Loading ...");
+
 #if ANIMATION_ENABLED
     /* Initialize animation */
     _bigSpriteAnim = new Animation(&_currentBigSprite, &_clock);
@@ -83,14 +90,14 @@ void EventScene::paint() {
     _bigSpriteAnim->animate();
 #endif
 
-    /* Wait for initialization */
-    if (events.size() == 0) { return; }
-
     /* Draw everything */
     _window->draw(_currentBigSprite);
     _window->draw(_overlayGradient);
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
+
+    /* Wait for initialization */
+    if (events.size() == 0) { return; }
 
     if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
         /* Mark initialized and sync clocks */
