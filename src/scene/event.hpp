@@ -5,6 +5,7 @@
 #include <vector>
 #include "base.hpp"
 #include "../data.hpp"
+#include "../anim.hpp"
 
 class EventScene : public Scene {
     private:
@@ -25,6 +26,7 @@ class EventScene : public Scene {
     /** Big image being shown */
     sf::Texture _currentBigTexture;
     sf::Sprite _currentBigSprite;
+    Animation * _bigSpriteAnim;
     sf::Texture _overlayGradientTexture;
     sf::Sprite _overlayGradient;
 
@@ -42,6 +44,9 @@ class EventScene : public Scene {
 
     /** Paint the window */
     virtual void paint();
+
+    /** Destructor */
+    ~EventScene();
 };
 
 #endif

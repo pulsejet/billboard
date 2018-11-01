@@ -1,5 +1,6 @@
 #include <iostream>
 #include "event.hpp"
+#include "../anim.hpp"
 #include "../transforms.hpp"
 
 void EventScene::loadBigImage(Event event) {
@@ -9,6 +10,9 @@ void EventScene::loadBigImage(Event event) {
     _currentBigSprite.setTexture(_currentBigTexture, true);
 
     scaleCenterSpriteFull(_currentBigSprite, event.bigImage, 0.9f);
+
+    /* Set base coordinates for animation */
+    if (_bigSpriteAnim) _bigSpriteAnim->rebase();
 
     /* Load texts */
     float height = WINDOW_HEIGHT / 18.0;
@@ -49,11 +53,21 @@ void EventScene::create(sf::RenderWindow * window) {
     /* Skip events with no image */
     while (_events[_currentEventIndex++].imageUrl == STRING_EMPTY);
 
+    /* Initialize animation */
+    _bigSpriteAnim = new Animation(&_currentBigSprite, &_clock);
+    _bigSpriteAnim->set_lcr(TIME_DELAY * 1000, 9);
+
+    /* Load first image */
     loadBigImage(_events[_currentEventIndex]);
 }
 
 /** Paint the window. Call this every iteration. */
 void EventScene::paint() {
+
+    /* Animate sprite before drawing */
+    _bigSpriteAnim->animate();
+
+    /* Draw everything */
     _window->draw(_currentBigSprite);
     _window->draw(_overlayGradient);
     _window->draw(_eventNameText);
@@ -74,4 +88,8 @@ void EventScene::paint() {
 
         loadBigImage(_events[_currentEventIndex]);
     }
+}
+
+EventScene::~EventScene() {
+    delete _bigSpriteAnim;
 }
