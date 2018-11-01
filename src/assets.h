@@ -1,16 +1,13 @@
 #ifndef _INSTIAPP_ASSETS_H
 #define _INSTIAPP_ASSETS_H
 
-extern unsigned char fade_png[];
-extern unsigned int fade_png_len;
+#define DEFINE_ASSET(X) \
+    extern unsigned char X[]; \
+    extern unsigned int X##_len;
 
-extern unsigned char roboto_light_ttf[];
-extern unsigned int roboto_light_ttf_len;
-
-extern unsigned char roboto_ttf[];
-extern unsigned char roboto_ttf_len;
-
-extern unsigned char progress_png[];
-extern unsigned int progress_png_len;
+DEFINE_ASSET(fade_png)
+DEFINE_ASSET(roboto_light_ttf)
+DEFINE_ASSET(roboto_ttf)
+DEFINE_ASSET(progress_png)
 
 #endif
