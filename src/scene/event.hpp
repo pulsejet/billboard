@@ -21,7 +21,7 @@ class EventScene : public Scene {
     sf::Clock _clock;
 
     /** Current event being displayed */
-    int _currentEventIndex = 0;
+    size_t _currentEventIndex = 0;
 
     /** Big image being shown */
     sf::Texture _currentBigTexture;
