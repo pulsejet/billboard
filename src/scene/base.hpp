@@ -12,6 +12,9 @@ class Scene {
 
     /** Paint the window */
     virtual void paint() = 0;
+
+    /* Destructor */
+    virtual ~Scene() {};
 };
 
 #endif
