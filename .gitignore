@@ -3,6 +3,8 @@ curl
 SMFL
 *.exe
 *.dll
+*.o
+*.d
 images
 *.jpg
 fonts
