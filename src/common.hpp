@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <SFML/Graphics.hpp>
 #include <sys/stat.h>
 #include <iomanip>
 #include "config.h"
@@ -24,6 +25,9 @@ extern unsigned int roboto_light_ttf_len;
 
 extern unsigned char roboto_ttf[];
 extern unsigned char roboto_ttf_len;
+
+extern unsigned char progress_png[];
+extern unsigned int progress_png_len;
 
 /** Get standard image file path */
 inline std::string imageFilename(std::string url) {
@@ -48,6 +52,20 @@ inline void print_time() {
          << std::setfill('0') << std::setw(2) << now->tm_min << ":"
          << std::setfill('0') << std::setw(2) << now->tm_sec
          << "] ";
+}
+
+/** Load sprite for progress spinner */
+inline sf::Sprite makeProgressSprite(sf::Texture * texture) {
+    sf::Sprite sprite;
+    if (texture->loadFromMemory(&progress_png, progress_png_len)) {
+        texture->setSmooth(true);
+        sprite.setTexture(*texture);
+        const float scaling = (WINDOW_HEIGHT / (float) texture->getSize().y) * 0.1;
+        sprite.setScale(scaling, scaling);
+        sprite.setOrigin(texture->getSize().x / 2.0, texture->getSize().y / 2.0);
+        sprite.setPosition(WINDOW_WIDTH * 0.85, WINDOW_HEIGHT * 0.85);
+    }
+    return sprite;
 }
 
 /** Convert date string to tm object */

@@ -75,6 +75,9 @@ void EventScene::create(sf::RenderWindow * window) {
     /* Set initial loading message */
     _eventNameText.setString("Loading ...");
 
+    /* Load spinner */
+    _progressSprite = makeProgressSprite(&_progressTexture);
+
 #if ANIMATION_ENABLED
     /* Initialize animation */
     _bigSpriteAnim = new Animation(&_currentBigSprite, &_clock);
@@ -97,7 +100,11 @@ void EventScene::paint() {
     _window->draw(_eventTimeText);
 
     /* Wait for initialization */
-    if (events.size() == 0) { return; }
+    if (events.size() == 0) {
+        _window->draw(_progressSprite);
+        _progressSprite.setRotation(_clock.getElapsedTime().asSeconds() * 450);
+        return;
+    }
 
     if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
         /* Mark initialized and sync clocks */

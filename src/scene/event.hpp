@@ -30,6 +30,10 @@ class EventScene : public Scene {
     sf::Texture _overlayGradientTexture;
     sf::Sprite _overlayGradient;
 
+    /** Other sprites */
+    sf::Texture _progressTexture;
+    sf::Sprite _progressSprite;
+
     /** Main texts */
     sf::Text _eventNameText;
     sf::Text _eventTimeText;
