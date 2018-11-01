@@ -48,7 +48,7 @@ void EventScene::create(sf::RenderWindow * window) {
 
     /* Load overlay gradient */
     sf::Image overlayImage;
-    if (overlayImage.loadFromFile("fade.png")) {
+    if (overlayImage.loadFromFile("assets/fade.png")) {
         _overlayGradientTexture.loadFromImage(overlayImage);
         _overlayGradientTexture.setSmooth(true);
         _overlayGradient.setTexture(_overlayGradientTexture);
