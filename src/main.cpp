@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "painter.hpp"
 #include "config.h"
+#include "data.hpp"
 
 int main()
 {
