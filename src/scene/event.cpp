@@ -1,6 +1,7 @@
 #include <iostream>
 #include "event.hpp"
 #include "../transforms.hpp"
+#include "../common.hpp"
 
 #if ANIMATION_ENABLED
 #include "../anim.hpp"
@@ -42,13 +43,13 @@ void EventScene::create(sf::RenderWindow * window) {
     _events = _data.getEvents();
 
     /* Load font */
-    if (!_font.loadFromFile(TITLE_FONT)) {
+    if (!_font.loadFromMemory(&roboto_light_ttf, roboto_light_ttf_len)) {
         std::cout << "Could not load font" << std::endl;
     }
 
     /* Load overlay gradient */
     sf::Image overlayImage;
-    if (overlayImage.loadFromFile("assets/fade.png")) {
+    if (overlayImage.loadFromMemory(&fade_png, fade_png_len)) {
         _overlayGradientTexture.loadFromImage(overlayImage);
         _overlayGradientTexture.setSmooth(true);
         _overlayGradient.setTexture(_overlayGradientTexture);

@@ -8,8 +8,6 @@
 #define WINDOW_HEIGHT 768
 #define FULLSCREEN true
 #define WINDOW_TITLE "Noticeboard!"
-#define MAIN_FONT "fonts/segoeui.ttf"
-#define TITLE_FONT "fonts/Roboto-Light.ttf"
 #define WEIGHT_THRESHOLD 800
 
 #define ANIMATION_ENABLED true
