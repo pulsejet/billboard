@@ -27,7 +27,7 @@ bool requestImage(Config * cfg, std::string url) {
     }
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, CURL_TIMEOUT);
 
     // Open file
     fp = fopen(imageFilename(cfg, url).c_str(), "wb");
@@ -68,7 +68,7 @@ std::unique_ptr<std::string> requestStr(std::string url) {
     }
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, CURL_TIMEOUT);
 
     // Response information.
     int httpCode(0);

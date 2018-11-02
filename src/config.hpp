@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+#define CURL_TIMEOUT 4
+
 #define CONFIG_PATH "config.json"
 
 #define K_WINDOW_WIDTH "window_width"
