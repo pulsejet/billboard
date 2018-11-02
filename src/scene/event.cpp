@@ -74,9 +74,6 @@ void EventScene::create(sf::RenderWindow * window) {
     _eventTimeText.setFillColor(sf::Color::White);
     _eventTimeText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 4.5);
 
-    /* Set initial loading message */
-    _eventNameText.setString("Loading ...");
-
     /* Load spinner */
     _progressSprite = makeProgressSprite(&_progressTexture);
 
