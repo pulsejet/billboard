@@ -9,6 +9,6 @@
 bool requestImage(Config * cfg, std::string url);
 
 /** Get response of an HTTP request as string unique_ptr */
-std::unique_ptr<std::string> requestStr(std::string url);
+std::unique_ptr<std::string> requestStr(Config * cfg, std::string url);
 
 #endif

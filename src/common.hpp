@@ -40,6 +40,15 @@ inline void print_time() {
          << "] ";
 }
 
+/** Simple hash function */
+inline uint64_t slash_hash(const char *s)
+{
+    union { uint64_t h; uint8_t u[8]; };
+    int i=0; h=strlen(s);
+    while (*s) { u[i%8] += *s + i + (*s >> ((h/(i+1)) % 5)); s++; i++; }
+    return h;
+}
+
 /** Convert date string to tm object */
 tm getTime(std::string dateStr);
 

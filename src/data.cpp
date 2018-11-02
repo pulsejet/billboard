@@ -17,7 +17,7 @@ Data::Data(Config * config) {
 /** Get list of all events from API */
 std::vector<Event> Data::getEvents() {
     std::vector<Event> eventVector;
-    auto eventsString = requestStr(cfg->getS(K_EVENTS_URL));
+    auto eventsString = requestStr(cfg, cfg->getS(K_EVENTS_URL));
 
     /* Check if our request failed */
     if (eventsString == NULL) {

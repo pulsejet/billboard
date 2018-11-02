@@ -1,4 +1,5 @@
 #include <curl/curl.h>
+#include <fstream>
 #include "http.hpp"
 #include "common.hpp"
 
@@ -60,7 +61,7 @@ bool requestImage(Config * cfg, std::string url) {
 }
 
 /** Get response of an HTTP request as string ptr */
-std::unique_ptr<std::string> requestStr(std::string url) {
+std::unique_ptr<std::string> requestStr(Config * cfg, std::string url) {
     // Init curl
     CURL * curl = curl_easy_init();
     if (!curl) {
@@ -90,8 +91,29 @@ std::unique_ptr<std::string> requestStr(std::string url) {
     print_time();
     std::cout << httpCode << " " << url << std::endl;
 
+    // Get cache file name
+    std::string cachefile = cfg->getS(K_CACHE_DIR) +  std::to_string(slash_hash(url.c_str()));
+
+    // Check status code
     if (httpCode == 200) {
+        // Cache response
+        std::ofstream outs(cachefile);
+        outs << *httpData.get();
+        outs.close();
+
+        // Return for further processing
         return httpData;
+    } else if (file_exists(cachefile)) {
+        // Fallback to cache if it exists
+        std::ifstream ifs(cachefile);
+
+        // Read cache
+        std::unique_ptr<std::string> cache;
+        cache.reset(new std::string((std::istreambuf_iterator<char>(ifs) ), (std::istreambuf_iterator<char>())));
+        ifs.close();
+
+        return cache;
     }
+
     return NULL;
 }
