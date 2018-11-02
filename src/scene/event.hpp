@@ -58,6 +58,7 @@ class EventScene : public Scene {
     /** Memory Cache of events */
     mutable std::vector<Event> events;
     mutable std::mutex events_mutex;
+    mutable bool refreshing = false;
 
     /** Destructor */
     ~EventScene();

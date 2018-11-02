@@ -35,6 +35,7 @@ void refreshEvents(const EventScene * scene) {
     std::lock_guard<std::mutex> guard(scene->events_mutex);
     scene->events = loaded;
     print_time();
+    scene->refreshing = false;
     std::cout << "Loaded " << loaded.size() << " events from network" << std::endl;
 }
 
@@ -99,7 +100,7 @@ void EventScene::paint() {
     _window->draw(_eventTimeText);
 
     /* Wait for initialization */
-    if (events.size() == 0) {
+    if (events.size() == 0 || refreshing) {
         _window->draw(_progressSprite);
         _progressSprite.setRotation(_clock.getElapsedTime().asSeconds() * 450);
         return;
@@ -134,6 +135,7 @@ void EventScene::paint() {
     if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
         _bgThread->join();
         delete _bgThread;
+        refreshing = true;
         _bgThread = new std::thread(refreshEvents, this);
         _refresh_clock.restart();
     }
