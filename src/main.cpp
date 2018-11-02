@@ -16,6 +16,9 @@ int main()
     );
     Painter painter(cfg, window);
 
+    /* Hide mouse cursor */
+    window->setMouseCursorVisible(false);
+
     /* Initialize data client */
     data_global_init();
 
