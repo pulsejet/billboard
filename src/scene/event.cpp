@@ -106,25 +106,16 @@ void EventScene::paint() {
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
 
-    /* Refresh events */
-    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
-        _bgThread->join();
-        delete _bgThread;
-        refreshing = true;
-        _bgThread = new std::thread(refreshEvents, this);
-        _refresh_clock.restart();
-    }
-
     /* Wait for initialization */
-    if (events.size() == 0 || refreshing) {
+    if (refreshing) {
         _window->draw(_progressSprite);
         _progressSprite.setRotation(_clock.getElapsedTime().asSeconds() * 450);
-        return;
     }
 
     if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
         /* Mark initialized and sync clocks */
         if (!_initialized) {
+            if (refreshing) { return; }
             _initialized = true;
             _refresh_clock.restart();
         }
@@ -134,17 +125,27 @@ void EventScene::paint() {
 
         /* Lock events */
         std::lock_guard<std::mutex> guard(events_mutex);
+        if (events.size() > 0) {
+            /* Load new image */
+            if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
+            while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
+                events[_currentEventIndex].weight < WEIGHT_THRESHOLD
+            ) {
+                _currentEventIndex++;
+                if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
+            };
 
-        /* Load new image */
-        if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
-        while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
-               events[_currentEventIndex].weight < WEIGHT_THRESHOLD
-        ) {
-            _currentEventIndex++;
-            if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
-        };
+            loadBigImage(events[_currentEventIndex]);
+        }
+    }
 
-        loadBigImage(events[_currentEventIndex]);
+    /* Refresh events */
+    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
+        _bgThread->join();
+        delete _bgThread;
+        refreshing = true;
+        _bgThread = new std::thread(refreshEvents, this);
+        _refresh_clock.restart();
     }
 }
 
