@@ -41,7 +41,7 @@ INCLUDE                = -Iinclude
 CPPFLAGS               = -Wall -Wextra    # helpful for writing better code (behavior-related)
 
 # Directories with libraries
-LIBRARY_DIRS		   = -LSMFL/lib -Lcurl/lib
+LIBRARY_DIRS		   = -Llib
 
 # The options used in linking as well as in any direct use of ld.
 LDFLAGS                =
