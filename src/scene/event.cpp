@@ -39,6 +39,10 @@ void refreshEvents(const EventScene * scene) {
         return;
     }
 
+    /* Reset the clock to prevent this happening forever */
+    scene->_refresh_clock.restart();
+
+    /* Lock and update events */
     std::lock_guard<std::mutex> guard(scene->events_mutex);
     scene->events = loaded;
     std::cout << "Loaded " << loaded.size() << " events from network" << std::endl;
@@ -132,11 +136,19 @@ void EventScene::choreBigImage() {
 }
 
 void EventScene::choreRefresh() {
-    _bgThread->join();
-    delete _bgThread;
-    refreshing = true;
-    _bgThread = new std::thread(refreshEvents, this);
-    _refresh_clock.restart();
+    /* Check for existing threads */
+    if (_bgThread) {
+        _bgThread->join();
+        delete _bgThread;
+        _bgThread = nullptr;
+    }
+
+    /* Check on the condition again just to be sure */
+    if (_refresh_clock.getElapsedTime().asSeconds() > cfg->getI(K_REFRESH_DURATION)) {
+        refreshing = true;
+        _bgThread = new std::thread(refreshEvents, this);
+        _refresh_clock.restart();
+    }
 }
 
 /** Paint the window. Call this every iteration. */

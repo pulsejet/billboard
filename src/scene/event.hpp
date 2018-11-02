@@ -19,7 +19,6 @@ class EventScene : public Scene {
 
     /** Always maintain a timer */
     sf::Clock _clock;
-    sf::Clock _refresh_clock;
 
     /** Current event being displayed */
     size_t _currentEventIndex = 0;
@@ -62,6 +61,7 @@ class EventScene : public Scene {
     mutable std::vector<Event> events;
     mutable std::mutex events_mutex;
     mutable bool refreshing = true;
+    mutable sf::Clock _refresh_clock;
 
     /** Destructor */
     ~EventScene();
