@@ -1,4 +1,4 @@
-{
+ {
     "window_width": 0,
     "window_height": 0,
     "fullscreen": true,
@@ -6,6 +6,7 @@
     "time_delay": 6,
     "url_events": "https://insti.app/api/events",
     "images_dir": "images/",
+    "cache_dir": "cache/",
     "refresh_duration": 300,
     "weight_threshold": 800,
 

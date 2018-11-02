@@ -4,7 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
-#define CURL_TIMEOUT 4
+#define CURL_TIMEOUT 10
 
 #define CONFIG_PATH "config.json"
 
@@ -15,6 +15,7 @@
 #define K_TIME_DELAY "time_delay"
 #define K_EVENTS_URL "url_events"
 #define K_IMAGES_DIR "images_dir"
+#define K_CACHE_DIR "cache_dir"
 #define K_REFRESH_DURATION "refresh_duration"
 #define K_WEIGHT_THRESHOLD "weight_threshold"
 
