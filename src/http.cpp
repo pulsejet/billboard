@@ -48,6 +48,11 @@ bool requestImage(std::string url) {
     // Clean up the resources
     curl_easy_cleanup(curl);
 
+    int httpCode(0);
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+    print_time();
+    std::cout << httpCode << " " << url << std::endl;
+
     // Close the file
     fclose(fp);
 
@@ -81,6 +86,9 @@ std::unique_ptr<std::string> requestStr(std::string url) {
     curl_easy_perform(curl);
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
     curl_easy_cleanup(curl);
+
+    print_time();
+    std::cout << httpCode << " " << url << std::endl;
 
     if (httpCode == 200) {
         return httpData;
