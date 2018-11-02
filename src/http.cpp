@@ -27,6 +27,7 @@ bool requestImage(std::string url) {
     }
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
 
     // Open file
     fp = fopen(imageFilename(url).c_str(), "wb");
@@ -60,7 +61,9 @@ std::unique_ptr<std::string> requestStr(std::string url) {
     if (!curl) {
         throw std::invalid_argument("CURL not possible!");
     }
+
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
 
     // Response information.
     int httpCode(0);
