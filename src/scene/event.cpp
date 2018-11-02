@@ -92,8 +92,54 @@ void EventScene::create(sf::RenderWindow * window) {
 #endif
 }
 
+/** Chore to change main image after each cycle */
+void EventScene::choreBigImage() {
+    /* Mark initialized and sync clocks */
+    if (!_initialized) {
+        if (refreshing) { return; }
+        _initialized = true;
+        _refresh_clock.restart();
+    }
+
+    /* Reset the clock */
+    _clock.restart();
+
+    /* Lock events */
+    std::lock_guard<std::mutex> guard(events_mutex);
+    if (events.size() > 0) {
+        /* Load new image */
+        if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
+        while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
+            events[_currentEventIndex].weight < WEIGHT_THRESHOLD
+        ) {
+            _currentEventIndex++;
+            if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
+        };
+
+        loadBigImage(events[_currentEventIndex]);
+    }
+}
+
+void EventScene::choreRefresh() {
+    _bgThread->join();
+    delete _bgThread;
+    refreshing = true;
+    _bgThread = new std::thread(refreshEvents, this);
+    _refresh_clock.restart();
+}
+
 /** Paint the window. Call this every iteration. */
 void EventScene::paint() {
+
+    /* Update big image and texts */
+    if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
+        choreBigImage();
+    }
+
+    /* Refresh events */
+    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
+        choreRefresh();
+    }
 
 #if ANIMATION_ENABLED
     /* Animate sprite before drawing */
@@ -106,46 +152,10 @@ void EventScene::paint() {
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
 
-    /* Wait for initialization */
+    /* Show spinner while refreshing */
     if (refreshing) {
         _window->draw(_progressSprite);
         _progressSprite.setRotation(_clock.getElapsedTime().asSeconds() * 450);
-    }
-
-    if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
-        /* Mark initialized and sync clocks */
-        if (!_initialized) {
-            if (refreshing) { return; }
-            _initialized = true;
-            _refresh_clock.restart();
-        }
-
-        /* Reset the clock */
-        _clock.restart();
-
-        /* Lock events */
-        std::lock_guard<std::mutex> guard(events_mutex);
-        if (events.size() > 0) {
-            /* Load new image */
-            if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
-            while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
-                events[_currentEventIndex].weight < WEIGHT_THRESHOLD
-            ) {
-                _currentEventIndex++;
-                if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
-            };
-
-            loadBigImage(events[_currentEventIndex]);
-        }
-    }
-
-    /* Refresh events */
-    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
-        _bgThread->join();
-        delete _bgThread;
-        refreshing = true;
-        _bgThread = new std::thread(refreshEvents, this);
-        _refresh_clock.restart();
     }
 }
 

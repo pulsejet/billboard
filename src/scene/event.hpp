@@ -44,6 +44,8 @@ class EventScene : public Scene {
     std::thread * _bgThread;
 
     void loadBigImage(Event event);
+    void choreBigImage();
+    void choreRefresh();
 
     public:
     /** Constructor */
