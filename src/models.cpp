@@ -1,10 +1,10 @@
 #include <sstream>
 #include <iomanip>
 #include "models.hpp"
-#include "config.h"
+#include "config.hpp"
 #include "common.hpp"
 
-Body::Body(nlohmann::json json) {
+Body::Body(Config * cfg, nlohmann::json json) {
     id = json["id"];
     strId = json["str_id"];
     name = json["name"];
@@ -18,7 +18,7 @@ Body::Body(nlohmann::json json) {
     }
 }
 
-Event::Event(nlohmann::json json) {
+Event::Event(Config * cfg, nlohmann::json json) {
     id = json["id"];
     strId = json["str_id"];
     name = json["name"];
@@ -29,7 +29,7 @@ Event::Event(nlohmann::json json) {
 
     // Get bodies
     for (auto body : json["bodies"]) {
-        bodies.push_back(Body(body));
+        bodies.push_back(Body(cfg, body));
     }
 
     // Image may be null
@@ -41,7 +41,7 @@ Event::Event(nlohmann::json json) {
 
     // Save filename
     if (imageUrl != STRING_EMPTY) {
-        imageFileName = imageFilename(imageUrl);
+        imageFileName = imageFilename(cfg, imageUrl);
     }
 
     // Calculate venue string

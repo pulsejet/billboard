@@ -15,7 +15,7 @@ std::size_t callback(
 }
 
 /** Request and save an image to common location */
-bool requestImage(std::string url) {
+bool requestImage(Config * cfg, std::string url) {
     CURL * curl;
     CURLcode imgresult;
     FILE *fp = NULL;
@@ -30,7 +30,7 @@ bool requestImage(std::string url) {
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
 
     // Open file
-    fp = fopen(imageFilename(url).c_str(), "wb");
+    fp = fopen(imageFilename(cfg, url).c_str(), "wb");
     if (fp == NULL) std::cout << "File cannot be opened" << std::endl;
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -42,7 +42,7 @@ bool requestImage(std::string url) {
     if (imgresult) {
         std::cout << imgresult << "Cannot grab the image!\n";
     } else {
-        success = file_exists(imageFilename(url).c_str());
+        success = file_exists(imageFilename(cfg, url).c_str());
     }
 
     // Clean up the resources

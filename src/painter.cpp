@@ -1,10 +1,11 @@
 #include "painter.hpp"
 #include "scene/event.hpp"
 
-Painter::Painter(sf::RenderWindow * window) {
+Painter::Painter(Config * config, sf::RenderWindow * window) {
     _window = window;
+    cfg = config;
     scene = new EventScene();
-    scene->create(window);
+    scene->create(cfg, window);
 }
 
 Painter::~Painter() {

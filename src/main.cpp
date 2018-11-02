@@ -1,17 +1,20 @@
 #include <SFML/Graphics.hpp>
 #include "painter.hpp"
-#include "config.h"
+#include "config.hpp"
 #include "data.hpp"
 
 int main()
 {
+    /* Load config */
+    Config * cfg = new Config();
+
     /* Make window */
     sf::RenderWindow * window = new sf::RenderWindow(
-        sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
-        WINDOW_TITLE,
-        ((FULLSCREEN) ? sf::Style::Fullscreen : sf::Style::Default)
+        sf::VideoMode(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT)),
+        cfg->getS(K_WINDOW_TITLE),
+        ((cfg->getB(K_FULLSCREEN)) ? sf::Style::Fullscreen : sf::Style::Default)
     );
-    Painter painter(window);
+    Painter painter(cfg, window);
 
     /* Initialize data client */
     data_global_init();
@@ -40,5 +43,6 @@ int main()
 
     /* Clean up */
     data_global_clean();
+    delete cfg;
     return 0;
 }

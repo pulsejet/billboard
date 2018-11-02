@@ -12,6 +12,7 @@
 
 class EventScene : public Scene {
     private:
+    Config * cfg;
     sf::RenderWindow * _window;
 
     bool _initialized = false;
@@ -49,7 +50,7 @@ class EventScene : public Scene {
 
     public:
     /** Constructor */
-    virtual void create(sf::RenderWindow * window);
+    virtual void create(Config * config, sf::RenderWindow * window);
 
     /** Paint the window */
     virtual void paint();

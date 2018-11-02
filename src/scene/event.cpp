@@ -4,10 +4,7 @@
 #include "../common.hpp"
 #include "../sprite_common.hpp"
 #include "../assets.h"
-
-#if ANIMATION_ENABLED
 #include "../anim.hpp"
-#endif
 
 void EventScene::loadBigImage(Event event) {
     /* Load big image */
@@ -16,21 +13,22 @@ void EventScene::loadBigImage(Event event) {
     _currentBigSprite.setTexture(_currentBigTexture, true);
 
     /* Transform sprites */
-    scaleCenterSpriteFull(_currentBigSprite, event.bigImage, 0.9f);
+    scaleCenterSpriteFull(cfg, _currentBigSprite, event.bigImage, 0.9f);
 
     /* Set texts */
     _eventNameText.setString(event.name);
     _eventTimeText.setString(event.getSubtitle());
 
-#if ANIMATION_ENABLED
-    /* Set base coordinates for animation */
-    if (_bigSpriteAnim) _bigSpriteAnim->rebase();
-#endif
+    if (cfg->getI(K_ANIMATION_ENABLED)) {
+        /* Set base coordinates for animation */
+        if (_bigSpriteAnim) _bigSpriteAnim->rebase();
+    }
 }
 
 /** Refresh events from network */
 void refreshEvents(const EventScene * scene) {
-    Data data;
+    Config config;
+    Data data(&config);
     auto loaded = data.getEvents();
     print_time();
     scene->refreshing = false;
@@ -47,7 +45,8 @@ void refreshEvents(const EventScene * scene) {
 }
 
 /** Constructor */
-void EventScene::create(sf::RenderWindow * window) {
+void EventScene::create(Config * config, sf::RenderWindow * window) {
+    cfg = config;
     _window = window;
 
     /* Get the events */
@@ -64,32 +63,32 @@ void EventScene::create(sf::RenderWindow * window) {
         _overlayGradientTexture.loadFromImage(overlayImage);
         _overlayGradientTexture.setSmooth(true);
         _overlayGradient.setTexture(_overlayGradientTexture);
-        scaleCenterSpriteFull(_overlayGradient, overlayImage, 1.0f, true);
+        scaleCenterSpriteFull(cfg, _overlayGradient, overlayImage, 1.0f, true);
     }
 
     /* Initialize texts */
-    float height = WINDOW_HEIGHT / 18.0;
+    float height = cfg->getI(K_WINDOW_HEIGHT) / 18.0;
     _eventNameText.setFont(_font);
 
     _eventNameText.setCharacterSize(height);
     _eventNameText.setFillColor(sf::Color::White);
     _eventNameText.setStyle(sf::Text::Bold);
-    _eventNameText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 5);
+    _eventNameText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) - height * 5);
 
-    height = WINDOW_HEIGHT / 22.0;
+    height = cfg->getI(K_WINDOW_HEIGHT) / 22.0;
     _eventTimeText.setFont(_font);
     _eventTimeText.setCharacterSize(height);
     _eventTimeText.setFillColor(sf::Color::White);
-    _eventTimeText.setPosition(WINDOW_WIDTH / 18.0, WINDOW_HEIGHT - height * 4.5);
+    _eventTimeText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) - height * 4.5);
 
     /* Load spinner */
-    _progressSprite = makeProgressSprite(&_progressTexture);
+    _progressSprite = makeProgressSprite(cfg, &_progressTexture);
 
-#if ANIMATION_ENABLED
-    /* Initialize animation */
-    _bigSpriteAnim = new Animation(&_currentBigSprite, &_clock);
-    _bigSpriteAnim->set_lcr(TIME_DELAY * 1000, EVENT_ANIMATION_SPEED);
-#endif
+    if (cfg->getI(K_ANIMATION_ENABLED)) {
+        /* Initialize animation */
+        _bigSpriteAnim = new Animation(cfg, &_currentBigSprite, &_clock);
+        _bigSpriteAnim->set_lcr(cfg->getI(K_TIME_DELAY) * 1000, cfg->getI(K_EVENT_ANIMATION_SPEED));
+    }
 }
 
 /** Chore to change main image after each cycle */
@@ -110,7 +109,7 @@ void EventScene::choreBigImage() {
         /* Load new image */
         if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
         while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
-            events[_currentEventIndex].weight < WEIGHT_THRESHOLD
+            events[_currentEventIndex].weight < cfg->getI(K_WEIGHT_THRESHOLD)
         ) {
             _currentEventIndex++;
             if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
@@ -132,19 +131,19 @@ void EventScene::choreRefresh() {
 void EventScene::paint() {
 
     /* Update big image and texts */
-    if (_clock.getElapsedTime().asSeconds() > TIME_DELAY || !_initialized) {
+    if (_clock.getElapsedTime().asSeconds() > cfg->getI(K_TIME_DELAY) || !_initialized) {
         choreBigImage();
     }
 
     /* Refresh events */
-    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
+    if (_refresh_clock.getElapsedTime().asSeconds() > cfg->getI(K_REFRESH_DURATION)) {
         choreRefresh();
     }
 
-#if ANIMATION_ENABLED
-    /* Animate sprite before drawing */
-    _bigSpriteAnim->animate();
-#endif
+    if (cfg->getI(K_ANIMATION_ENABLED)) {
+        /* Animate sprite before drawing */
+        _bigSpriteAnim->animate();
+    }
 
     /* Draw everything */
     _window->draw(_currentBigSprite);

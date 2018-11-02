@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "config.hpp"
 
 class Animation {
     private:
@@ -17,9 +18,11 @@ class Animation {
 
     sf::Clock * _clock;
 
+    Config * cfg;
+
     public:
-    Animation(sf::Transformable * sprite, sf::Clock * _clock);
-    Animation(sf::Transformable * sprite, sf::Clock * _clock, int baseX, int baseY);
+    Animation(Config * config, sf::Transformable * sprite, sf::Clock * _clock);
+    Animation(Config * config, sf::Transformable * sprite, sf::Clock * _clock, int baseX, int baseY);
 
     /** Set base coordinates to current */
     void rebase();
@@ -44,9 +47,10 @@ class Animation {
 class AnimationGroup {
     private:
     std::vector<Animation*> animations;
+    Config * cfg;
 
     public:
-    AnimationGroup(std::vector<sf::Transformable*> sprites, sf::Clock * _clock);
+    AnimationGroup(Config * config, std::vector<sf::Transformable*> sprites, sf::Clock * _clock);
 
     void rebase();
     void set_lcr(int duration, int speed);

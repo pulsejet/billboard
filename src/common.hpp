@@ -9,15 +9,15 @@
 #include <ctime>
 #include <sys/stat.h>
 #include <iomanip>
-#include "config.h"
+#include "config.hpp"
 
 /* Commons */
 extern const std::string monthNames[12];
 extern const std::string dateSuffixes[10];
 
 /** Get standard image file path */
-inline std::string imageFilename(std::string url) {
-    return IMAGES_DIR + url.substr(url.find_last_of("/") + 1);
+inline std::string imageFilename(Config * cfg, std::string url) {
+    return cfg->getS(K_IMAGES_DIR) + url.substr(url.find_last_of("/") + 1);
 }
 
 /** Check if a file exists from path */

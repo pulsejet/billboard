@@ -7,11 +7,12 @@
 class Painter {
     private:
     sf::RenderWindow * _window;
+    Config * cfg;
     Scene * scene;
 
     public:
     /** Constructor */
-    Painter(sf::RenderWindow * window);
+    Painter(Config * config, sf::RenderWindow * window);
 
     /** Clean up */
     ~Painter();

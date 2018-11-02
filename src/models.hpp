@@ -14,7 +14,7 @@ struct Body {
     std::string short_description;
     std::string imageUrl;
 
-    Body(nlohmann::json json);
+    Body(Config * cfg, nlohmann::json json);
 };
 
 struct Event {
@@ -32,7 +32,7 @@ struct Event {
 
     sf::Image bigImage;
 
-    Event(nlohmann::json json);
+    Event(Config * cfg, nlohmann::json json);
 
     std::string getSubtitle();
 };

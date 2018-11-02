@@ -1,18 +1,19 @@
 #include "anim.hpp"
 
 #include <math.h>
-#include "config.h"
+#include "config.hpp"
 
 #include <iostream>
 
-Animation::Animation(sf::Transformable * sprite, sf::Clock * clock, int baseX, int baseY) {
+Animation::Animation(Config * config, sf::Transformable * sprite, sf::Clock * clock, int baseX, int baseY) {
+    cfg = config;
     _sprite = sprite;
     _clock = clock;
     _baseX = baseX;
     _baseY = baseY;
 }
 
-Animation::Animation(sf::Transformable * sprite, sf::Clock * clock) : Animation(sprite, clock, 0, 0) {};
+Animation::Animation(Config * config, sf::Transformable * sprite, sf::Clock * clock) : Animation(config, sprite, clock, 0, 0) {};
 
 void Animation::rebase() {
     _baseX = (int) _sprite->getPosition().x;
@@ -34,15 +35,16 @@ void Animation::animate() {
     // Left-center-right
     if (has_lcr) {
         const float x = ((float) (_clock->getElapsedTime().asMilliseconds() % lcr_duration)) / ((float) lcr_duration);
-        finalX += WINDOW_WIDTH * pow(0.5, lcr_exponent) * pow(4 * (x - 0.5), lcr_exponent);
+        finalX += cfg->getI(K_WINDOW_WIDTH) * pow(0.5, lcr_exponent) * pow(4 * (x - 0.5), lcr_exponent);
     }
 
     _sprite->setPosition(finalX, finalY);
 }
 
-AnimationGroup::AnimationGroup(std::vector<sf::Transformable*> sprites, sf::Clock * _clock) {
+AnimationGroup::AnimationGroup(Config * config, std::vector<sf::Transformable*> sprites, sf::Clock * _clock) {
+    cfg = config;
     for (auto sprite : sprites) {
-        animations.push_back(new Animation(sprite, _clock));
+        animations.push_back(new Animation(cfg, sprite, _clock));
     }
 }
 

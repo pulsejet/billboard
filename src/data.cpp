@@ -9,10 +9,15 @@ void data_global_init() { curl_global_init(CURL_GLOBAL_DEFAULT); }
 void data_global_clean() { curl_global_cleanup(); }
 /* ==================================================== */
 
+/** Inject dependency */
+Data::Data(Config * config) {
+    cfg = config;
+}
+
 /** Get list of all events from API */
 std::vector<Event> Data::getEvents() {
     std::vector<Event> eventVector;
-    auto eventsString = requestStr(EVENTS_URL);
+    auto eventsString = requestStr(cfg->getS(K_EVENTS_URL));
 
     /* Check if our request failed */
     if (eventsString == NULL) {
@@ -24,11 +29,11 @@ std::vector<Event> Data::getEvents() {
 
     /* Get all events */
     for (auto eventJson : eventsJson) {
-        Event event(eventJson);
+        Event event(cfg, eventJson);
 
         /* Load image_url for the event */
         if (event.imageUrl != STRING_EMPTY) {
-            if (file_exists(event.imageFileName) || requestImage(event.imageUrl)) {
+            if (file_exists(event.imageFileName) || requestImage(cfg, event.imageUrl)) {
                 event.bigImage.loadFromFile(event.imageFileName);
             } else {
                 event.imageUrl = STRING_EMPTY;

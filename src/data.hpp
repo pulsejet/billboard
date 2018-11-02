@@ -6,14 +6,20 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#include "config.h"
+#include "config.hpp"
 #include "models.hpp"
 
 void data_global_init();
 void data_global_clean();
 
 class Data {
+    private:
+    Config * cfg;
+
     public:
+
+    /** Inject config */
+    Data(Config * config);
 
     /** Get list of all events from API */
     std::vector<Event> getEvents();

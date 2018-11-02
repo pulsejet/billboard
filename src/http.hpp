@@ -3,9 +3,10 @@
 
 #include <iostream>
 #include <memory>
+#include "config.hpp"
 
 /** Request and save an image to common location */
-bool requestImage(std::string url);
+bool requestImage(Config * cfg, std::string url);
 
 /** Get response of an HTTP request as string unique_ptr */
 std::unique_ptr<std::string> requestStr(std::string url);
