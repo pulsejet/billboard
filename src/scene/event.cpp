@@ -2,6 +2,7 @@
 #include "event.hpp"
 #include "../transforms.hpp"
 #include "../common.hpp"
+#include "../sprite_common.hpp"
 #include "../assets.h"
 
 #if ANIMATION_ENABLED
