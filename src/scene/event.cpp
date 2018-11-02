@@ -91,6 +91,12 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     }
 }
 
+/** Return if the event is valid to display on big screen */
+bool is_valid(Config * cfg, Event& event) {
+    return event.imageUrl != STRING_EMPTY &&
+           event.weight > cfg->getI(K_WEIGHT_THRESHOLD);
+}
+
 /** Chore to change main image after each cycle */
 void EventScene::choreBigImage() {
     /* Mark initialized and sync clocks */
@@ -106,11 +112,17 @@ void EventScene::choreBigImage() {
     /* Lock events */
     std::lock_guard<std::mutex> guard(events_mutex);
     if (events.size() > 0) {
+
+        /* Check that we have at least one valid event */
+        bool has_valid = false;
+        for (Event event : events) {
+            has_valid = has_valid || is_valid(cfg, event);
+        }
+        if (!has_valid) { return; }
+
         /* Load new image */
         if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
-        while (events[_currentEventIndex].imageUrl == STRING_EMPTY ||
-            events[_currentEventIndex].weight < cfg->getI(K_WEIGHT_THRESHOLD)
-        ) {
+        while (!is_valid(cfg, events[_currentEventIndex])) {
             _currentEventIndex++;
             if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
         };
