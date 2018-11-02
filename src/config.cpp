@@ -5,6 +5,7 @@
 Config::Config() {
     std::ifstream ifs(CONFIG_PATH);
     conf = nlohmann::json::parse(ifs);
+    ifs.close();
 
     /* Set fallbacks for width and height */
     if (this->getI(K_WINDOW_WIDTH) == 0) {
