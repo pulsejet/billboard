@@ -32,10 +32,17 @@ void EventScene::loadBigImage(Event event) {
 void refreshEvents(const EventScene * scene) {
     Data data;
     auto loaded = data.getEvents();
-    std::lock_guard<std::mutex> guard(scene->events_mutex);
-    scene->events = loaded;
     print_time();
     scene->refreshing = false;
+
+    /* Check failed calls */
+    if (loaded.size() == 0) {
+        std::cout << "No events found at network" << std::endl;
+        return;
+    }
+
+    std::lock_guard<std::mutex> guard(scene->events_mutex);
+    scene->events = loaded;
     std::cout << "Loaded " << loaded.size() << " events from network" << std::endl;
 }
 
@@ -99,6 +106,15 @@ void EventScene::paint() {
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
 
+    /* Refresh events */
+    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
+        _bgThread->join();
+        delete _bgThread;
+        refreshing = true;
+        _bgThread = new std::thread(refreshEvents, this);
+        _refresh_clock.restart();
+    }
+
     /* Wait for initialization */
     if (events.size() == 0 || refreshing) {
         _window->draw(_progressSprite);
@@ -129,15 +145,6 @@ void EventScene::paint() {
         };
 
         loadBigImage(events[_currentEventIndex]);
-    }
-
-    /* Refresh events */
-    if (_refresh_clock.getElapsedTime().asSeconds() > REFRESH_DURATION) {
-        _bgThread->join();
-        delete _bgThread;
-        refreshing = true;
-        _bgThread = new std::thread(refreshEvents, this);
-        _refresh_clock.restart();
     }
 }
 

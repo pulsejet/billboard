@@ -11,10 +11,18 @@ void data_global_clean() { curl_global_cleanup(); }
 
 /** Get list of all events from API */
 std::vector<Event> Data::getEvents() {
+    std::vector<Event> eventVector;
     auto eventsString = requestStr(EVENTS_URL);
+
+    /* Check if our request failed */
+    if (eventsString == NULL) {
+        return eventVector;
+    }
+
+    /* Parse the json */
     json eventsJson = json::parse(*eventsString.get())["data"];
 
-    std::vector<Event> eventVector;
+    /* Get all events */
     for (auto eventJson : eventsJson) {
         Event event(eventJson);
 
@@ -22,6 +30,8 @@ std::vector<Event> Data::getEvents() {
         if (event.imageUrl != STRING_EMPTY) {
             if (file_exists(event.imageFileName) || requestImage(event.imageUrl)) {
                 event.bigImage.loadFromFile(event.imageFileName);
+            } else {
+                event.imageUrl = STRING_EMPTY;
             }
         }
 
