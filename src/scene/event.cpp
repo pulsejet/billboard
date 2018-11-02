@@ -61,14 +61,17 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
         std::cout << "Could not load font" << std::endl;
     }
 
-    /* Load overlay gradient */
-    sf::Image overlayImage;
-    if (overlayImage.loadFromMemory(&fade_png, fade_png_len)) {
-        _overlayGradientTexture.loadFromImage(overlayImage);
-        _overlayGradientTexture.setSmooth(true);
-        _overlayGradient.setTexture(_overlayGradientTexture);
-        scaleCenterSpriteFull(cfg, _overlayGradient, overlayImage, 1.0f, true);
-    }
+    /* Define gradient vertex array */
+    #define DEF_VERX(x, y, color) _overlayGrad.push_back(sf::Vertex(sf::Vector2f(x, y), color))
+    DEF_VERX(0, cfg->getI(K_WINDOW_HEIGHT) * 0.55, sf::Color::Transparent);
+    DEF_VERX(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT) * 0.55, sf::Color::Transparent);
+
+    DEF_VERX(0, cfg->getI(K_WINDOW_HEIGHT) * 0.75, sf::Color::Black);
+    DEF_VERX(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT) * 0.75, sf::Color::Black);
+
+    DEF_VERX(0, cfg->getI(K_WINDOW_HEIGHT), sf::Color::Black);
+    DEF_VERX(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT), sf::Color::Black);
+    #undef DEF_VERX
 
     /* Initialize texts */
     float height = cfg->getI(K_WINDOW_HEIGHT) / 18.0;
@@ -171,7 +174,7 @@ void EventScene::paint() {
 
     /* Draw everything */
     _window->draw(_currentBigSprite);
-    _window->draw(_overlayGradient);
+    _window->draw(&_overlayGrad[0], _overlayGrad.size(), sf::TriangleStrip);
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
 

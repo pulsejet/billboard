@@ -27,8 +27,8 @@ class EventScene : public Scene {
     sf::Texture _currentBigTexture;
     sf::Sprite _currentBigSprite;
     Animation * _bigSpriteAnim;
-    sf::Texture _overlayGradientTexture;
-    sf::Sprite _overlayGradient;
+
+    std::vector<sf::Vertex> _overlayGrad;
 
     /** Other sprites */
     sf::Texture _progressTexture;
