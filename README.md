@@ -2,7 +2,7 @@
 Digital billboard for [WnCC](https://github.com/wncc)'s InstiApp in SFML
 
 ## Dependencies
-The only two external dependencies are SFML (2.5+) and CURL, with OpenSSL for HTTPS requests.
+The package depends on SFML (2.5+), CURL (with OpenSSL binaries required for HTTPS requests) and `nlohmann::json`.
 
 ## Setup
 First, create hexdumps for all assets by running `make_xxd.sh` in a Unix like environment. You need to do this every time you change anything in the `assets` folder.
