@@ -127,14 +127,20 @@ void EventScene::choreBigImage() {
         }
         if (!has_valid) { return; }
 
-        /* Load new image */
+        /* Get the next event index to be displayed */
         if (++_currentEventIndex >= events.size()) _currentEventIndex = 0;
         while (!is_valid(cfg, events[_currentEventIndex])) {
             _currentEventIndex++;
             if (_currentEventIndex >= events.size()) _currentEventIndex = 0;
         };
 
+        /* Load new image */
         loadBigImage(events[_currentEventIndex]);
+
+        /* Reset the clock again
+         * This is supposed to account for delays in copying textures
+         * to video memory, leading to a skip at the start of animation */
+        _clock.restart();
     }
 }
 
