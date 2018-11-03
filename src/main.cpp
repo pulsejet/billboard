@@ -32,6 +32,9 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window->close();
+
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+                window->close();
         }
 
         /* Clear the window */
@@ -47,5 +50,6 @@ int main()
     /* Clean up */
     data_global_clean();
     delete cfg;
+    delete window;
     return 0;
 }
