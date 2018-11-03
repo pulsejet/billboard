@@ -20,7 +20,7 @@
 ##==========================================================================
 
 # The executable file name. Must be specified.
-PROGRAM                = bin/tv
+PROGRAM                = bin/billboard
 
 # C and C++ program compilers. Un-comment and specify for cross-compiling if needed.
 #CC                    = gcc

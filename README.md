@@ -1,5 +1,5 @@
-# InstiApp TV
-Noticeboard application for InstiApp in SFML
+# Billboard
+Digital billboard for [WnCC](https://github.com/wncc)'s InstiApp in SFML
 
 ## Dependencies
 The only two external dependencies are SFML (2.5+) and CURL, with OpenSSL for HTTPS requests.
@@ -32,8 +32,8 @@ sudo ldconfig
 cd ../..
 
 # Clone this repo
-git clone https://github.com/pulsejet/instiapp-tv tv
-cd tv
+git clone https://github.com/pulsejet/billboard
+cd billboard
 
 # Get include files
 wget https://github.com/nlohmann/json/releases/download/v3.4.0/include.zip && unzip -o include.zip && rm include.zip
