@@ -1,5 +1,7 @@
 #include <curl/curl.h>
+#include <string>
 #include <fstream>
+#include <sstream>
 #include "http.hpp"
 #include "common.hpp"
 
@@ -15,6 +17,14 @@ std::size_t callback(
     return totalBytes;
 }
 
+/** Get user agent to use */
+std::string getUserAgent(Config * cfg) {
+    curl_version_info_data * v = curl_version_info(CURLVERSION_NOW);
+    std::stringstream ss;
+    ss << "libcurl/" << v->version << "; Billboard " << BILLBOARD_VERSION << "; Location " << cfg->getS(K_LOCATION);
+    return ss.str();
+}
+
 /** Request and save an image to common location */
 bool requestImage(Config * cfg, std::string url) {
     CURL * curl;
@@ -28,8 +38,8 @@ bool requestImage(Config * cfg, std::string url) {
         throw std::invalid_argument("CURL not possible!");
     }
 
-    // Add query parameters for identification
-    url += "?location=" + cfg->getS(K_LOCATION);
+    // Set user agent for identification
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, getUserAgent(cfg).c_str());
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, CURL_TIMEOUT);
@@ -72,8 +82,8 @@ std::unique_ptr<std::string> requestStr(Config * cfg, std::string url) {
         throw std::invalid_argument("CURL not possible!");
     }
 
-    // Add query parameters for identification
-    url += "?location=" + cfg->getS(K_LOCATION);
+    // Set user agent for identification
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, getUserAgent(cfg).c_str());
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, CURL_TIMEOUT);

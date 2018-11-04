@@ -4,6 +4,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+#define BILLBOARD_VERSION "1.0.0"
+
 #define CURL_TIMEOUT 10
 #define LOGO_SCALE 0.3f
 
