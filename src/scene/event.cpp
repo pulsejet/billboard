@@ -179,10 +179,10 @@ void EventScene::choreRefresh() {
 /* Show logo as necessary */
 void EventScene::drawLogo() {
     const float t = _logoClock.getElapsedTime().asSeconds();
-    const float T = 5;
-    const float v = 3;
-    const float ts = 5;
-    const float fade_speed = 4;
+    const float T = cfg->getI(K_LOGO_SHOW_DURATION);
+    const float v = cfg->getI(K_LOGO_ANIM_SPEED);
+    const float ts = cfg->getI(K_LOGO_REPEAT_DELAY);
+    const float fade_speed = cfg->getI(K_LOGO_FADE_SPEED);
 
     /* Show circle using linear interpolation */
     if (t > ts) {

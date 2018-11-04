@@ -11,5 +11,10 @@
     "weight_threshold": 800,
 
     "animation_enabled": true,
-    "animation_speed": 11
+    "animation_speed": 11,
+
+    "logo_repeat_delay": 60,
+    "logo_show_duration": 8,
+    "logo_anim_speed": 3,
+    "logo_fade_speed": 4
 }
