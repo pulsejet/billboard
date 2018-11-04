@@ -12,4 +12,14 @@ void scaleCenterSpriteFull(
     float maxHeight = 1.0f,
     bool fullHeight = false);
 
+/** Set origin to center */
+void originCenter(sf::Sprite * obj);
+void originCenter(sf::Text * obj);
+
+/** Set position to center screen (requires origin at center) */
+void centerScreen(Config * cfg, sf::Sprite * obj);
+void centerScreen(Config * cfg, sf::Text * obj);
+void centerScreen(Config * cfg, sf::Sprite * obj, float x, float y);
+void centerScreen(Config * cfg, sf::Text * obj, float x, float y);
+
 #endif

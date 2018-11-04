@@ -29,3 +29,27 @@ void scaleCenterSpriteFull(
     sprite.setScale(scaleFactor, scaleFactor);
     sprite.setPosition(xTransform, 0);
 }
+
+/** Set origin to center */
+#define ORIGIN_CENTER {\
+    const auto bounds = obj->getGlobalBounds();\
+    obj->setOrigin(bounds.width / 2, bounds.height / 2);\
+}
+
+void originCenter(sf::Sprite * obj) ORIGIN_CENTER;
+void originCenter(sf::Text * obj) ORIGIN_CENTER;
+
+#undef ORIGIN_CENTER
+
+/** Set position to center screen (requires origin at center) */
+#define CENTER_SCREEN {\
+    obj->setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0 + x, cfg->getI(K_WINDOW_HEIGHT) / 2.0 + y);\
+}
+
+void centerScreen(Config * cfg, sf::Sprite * obj, float x, float y) CENTER_SCREEN;
+void centerScreen(Config * cfg, sf::Text * obj, float x, float y) CENTER_SCREEN;
+
+void centerScreen(Config * cfg, sf::Sprite * obj) { centerScreen(cfg, obj, 0, 0); }
+void centerScreen(Config * cfg, sf::Text * obj) { centerScreen(cfg, obj, 0, 0); }
+
+#undef CENTER_SCREEN

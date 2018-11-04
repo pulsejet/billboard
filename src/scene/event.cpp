@@ -107,15 +107,14 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     _logoName.setString(cfg->getS(K_LOGO_NAME));
 
     /* Setup logo sprites position and scale */
-    const auto lBounds = _logoSprite.getGlobalBounds();
-    const float scale = LOGO_SCALE * cfg->getI(K_WINDOW_HEIGHT) / lBounds.height;
-    _logoSprite.setOrigin(lBounds.width / 2, lBounds.height / 2);
+    const float scale = LOGO_SCALE * cfg->getI(K_WINDOW_HEIGHT) / _logoSprite.getGlobalBounds().height;
+    originCenter(&_logoSprite);
+    centerScreen(cfg, &_logoSprite);
     _logoSprite.setScale(scale, scale);
-    _logoSprite.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0);
 
-    const auto lnBounds = _logoName.getGlobalBounds();
-    _logoName.setOrigin(lnBounds.width / 2, lnBounds.height / 2);
-    _logoName.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0 + _logoSprite.getGlobalBounds().height / 1.7f);
+    /* Logo text positions */
+    originCenter(&_logoName);
+    centerScreen(cfg, &_logoName, 0, _logoSprite.getGlobalBounds().height / 1.7f);
 
     /* Initialize animation */
     if (cfg->getI(K_ANIMATION_ENABLED)) {
