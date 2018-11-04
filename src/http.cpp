@@ -22,10 +22,14 @@ bool requestImage(Config * cfg, std::string url) {
     FILE *fp = NULL;
     bool success = false;
 
+    // Initialize
     curl = curl_easy_init();
     if (!curl) {
         throw std::invalid_argument("CURL not possible!");
     }
+
+    // Add query parameters for identification
+    url += "?location=" + cfg->getS(K_LOCATION);
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, CURL_TIMEOUT);
@@ -67,6 +71,9 @@ std::unique_ptr<std::string> requestStr(Config * cfg, std::string url) {
     if (!curl) {
         throw std::invalid_argument("CURL not possible!");
     }
+
+    // Add query parameters for identification
+    url += "?location=" + cfg->getS(K_LOCATION);
 
     curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, CURL_TIMEOUT);

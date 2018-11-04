@@ -9,6 +9,8 @@
 
 #define CONFIG_PATH "config.json"
 
+#define K_LOCATION "location"
+
 #define K_WINDOW_WIDTH "window_width"
 #define K_WINDOW_HEIGHT "window_height"
 #define K_WINDOW_TITLE "window_title"
