@@ -13,6 +13,7 @@
     "animation_enabled": true,
     "animation_speed": 11,
 
+    "logo_super": "Powered by",
     "logo_name": "InstiApp",
     "logo_repeat_delay": 60,
     "logo_show_duration": 8,

@@ -23,6 +23,7 @@
 #define K_ANIMATION_ENABLED "animation_enabled"
 #define K_EVENT_ANIMATION_SPEED "animation_speed"
 
+#define K_LOGO_SUPER "logo_super"
 #define K_LOGO_NAME "logo_name"
 #define K_LOGO_ANIM_SPEED "logo_anim_speed"
 #define K_LOGO_REPEAT_DELAY "logo_repeat_delay"

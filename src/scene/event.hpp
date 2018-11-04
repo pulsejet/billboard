@@ -40,6 +40,7 @@ class EventScene : public Scene {
     sf::Texture _logoTexture;
     sf::Sprite _logoSprite;
     sf::Text _logoName;
+    sf::Text _logoSuper;
 
     /** Main texts */
     sf::Text _eventNameText;
