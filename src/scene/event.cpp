@@ -115,7 +115,7 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
 
     const auto lnBounds = _logoName.getGlobalBounds();
     _logoName.setOrigin(lnBounds.width / 2, lnBounds.height / 2);
-    _logoName.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0 + lBounds.height / 2.5f);
+    _logoName.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0 + _logoSprite.getGlobalBounds().height / 1.7f);
 
     /* Initialize animation */
     if (cfg->getI(K_ANIMATION_ENABLED)) {
