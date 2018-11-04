@@ -8,11 +8,16 @@ int main()
     /* Load config */
     Config * cfg = new Config();
 
+    /* Make settings for SFML */
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 4;
+
     /* Make window */
     sf::RenderWindow * window = new sf::RenderWindow(
         sf::VideoMode(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT)),
         cfg->getS(K_WINDOW_TITLE),
-        ((cfg->getB(K_FULLSCREEN)) ? sf::Style::Fullscreen : sf::Style::Default)
+        ((cfg->getB(K_FULLSCREEN)) ? sf::Style::Fullscreen : sf::Style::Default),
+        settings
     );
     Painter painter(cfg, window);
 

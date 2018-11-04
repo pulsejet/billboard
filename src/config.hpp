@@ -5,6 +5,7 @@
 #include <string>
 
 #define CURL_TIMEOUT 10
+#define LOGO_SCALE 0.6f
 
 #define CONFIG_PATH "config.json"
 

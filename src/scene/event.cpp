@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 #include "event.hpp"
 #include "../transforms.hpp"
 #include "../common.hpp"
@@ -91,8 +92,23 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     /* Load spinner */
     _progressSprite = makeProgressSprite(cfg, &_progressTexture);
 
+    /* Setup logo stuff */
+    _logoCircle.setFillColor(sf::Color::White);
+    _logoCircle.setPointCount(100);
+    _logoCircle.setPosition(0, 0);
+    _logoTexture.loadFromMemory(&logo_png, logo_png_len);
+    _logoTexture.setSmooth(true);
+    _logoSprite.setTexture(_logoTexture);
+
+    /* Setup logo sprite position and scale */
+    const auto lBounds = _logoSprite.getGlobalBounds();
+    const float scale = LOGO_SCALE * cfg->getI(K_WINDOW_HEIGHT) / lBounds.height;
+    _logoSprite.setOrigin(lBounds.width / 2, lBounds.height / 2);
+    _logoSprite.setScale(scale, scale);
+    _logoSprite.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0);
+
+    /* Initialize animation */
     if (cfg->getI(K_ANIMATION_ENABLED)) {
-        /* Initialize animation */
         _bigSpriteAnim = new Animation(cfg, &_currentBigSprite, &_clock);
         _bigSpriteAnim->set_lcr(cfg->getI(K_TIME_DELAY) * 1000, cfg->getI(K_EVENT_ANIMATION_SPEED));
     }
@@ -160,6 +176,42 @@ void EventScene::choreRefresh() {
     }
 }
 
+/* Show logo as necessary */
+void EventScene::drawLogo() {
+    const float t = _logoClock.getElapsedTime().asSeconds();
+    const float T = 5;
+    const float v = 3;
+    const float ts = 5;
+    const float fade_speed = 4;
+
+    /* Show circle using linear interpolation */
+    if (t > ts) {
+        const float w = cfg->getI(K_WINDOW_WIDTH);
+        const float r_th = ((T / 2) - std::abs((t - ts) - (T / 2))) * w * v;
+        const float r_max = (T / 2) * w * v;
+        const float r = std::min(r_th, w * 2);
+        const float w_fade = w / 1.5;
+
+        /* Draw circle */
+        _logoCircle.setRadius(r);
+        _logoCircle.setPosition(-r, -r);
+        _window->draw(_logoCircle);
+
+        /* Draw logo sprite */
+        if (r_th > w_fade) {
+            float alpha = std::min(((r_th - w_fade) / (r_max - w_fade)) * fade_speed, 1.0f);
+            _logoSprite.setColor(sf::Color(255, 255, 255, alpha * 255));
+            _window->draw(_logoSprite);
+        }
+    }
+
+    /* Reset back to normal */
+    if (t > ts + T) {
+        _logoClock.restart();
+        _logoCircle.setRadius(0);
+    }
+}
+
 /** Paint the window. Call this every iteration. */
 void EventScene::paint() {
 
@@ -183,6 +235,7 @@ void EventScene::paint() {
     _window->draw(&_overlayGrad[0], _overlayGrad.size(), sf::TriangleStrip);
     _window->draw(_eventNameText);
     _window->draw(_eventTimeText);
+    drawLogo();
 
     /* Show spinner while refreshing */
     if (refreshing) {

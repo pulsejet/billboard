@@ -17,8 +17,9 @@ class EventScene : public Scene {
 
     bool _initialized = false;
 
-    /** Always maintain a timer */
+    /** Timers for multiple things */
     sf::Clock _clock;
+    sf::Clock _logoClock;
 
     /** Current event being displayed */
     size_t _currentEventIndex = 0;
@@ -33,6 +34,9 @@ class EventScene : public Scene {
     /** Other sprites */
     sf::Texture _progressTexture;
     sf::Sprite _progressSprite;
+    sf::CircleShape _logoCircle;
+    sf::Texture _logoTexture;
+    sf::Sprite _logoSprite;
 
     /** Main texts */
     sf::Text _eventNameText;
@@ -46,6 +50,7 @@ class EventScene : public Scene {
     void loadBigImage(Event event);
     void choreBigImage();
     void choreRefresh();
+    void drawLogo();
 
     public:
     /** Constructor */
