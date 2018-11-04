@@ -100,12 +100,22 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     _logoTexture.setSmooth(true);
     _logoSprite.setTexture(_logoTexture);
 
-    /* Setup logo sprite position and scale */
+    /* Logo texts */
+    height = cfg->getI(K_WINDOW_HEIGHT) / 20.0;
+    _logoName.setFont(_font);
+    _logoName.setCharacterSize(height);
+    _logoName.setString(cfg->getS(K_LOGO_NAME));
+
+    /* Setup logo sprites position and scale */
     const auto lBounds = _logoSprite.getGlobalBounds();
     const float scale = LOGO_SCALE * cfg->getI(K_WINDOW_HEIGHT) / lBounds.height;
     _logoSprite.setOrigin(lBounds.width / 2, lBounds.height / 2);
     _logoSprite.setScale(scale, scale);
     _logoSprite.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0);
+
+    const auto lnBounds = _logoName.getGlobalBounds();
+    _logoName.setOrigin(lnBounds.width / 2, lnBounds.height / 2);
+    _logoName.setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0, cfg->getI(K_WINDOW_HEIGHT) / 2.0 + lBounds.height / 2.5f);
 
     /* Initialize animation */
     if (cfg->getI(K_ANIMATION_ENABLED)) {
@@ -200,8 +210,12 @@ void EventScene::drawLogo() {
         /* Draw logo sprite */
         if (r_th > w_fade) {
             float alpha = std::min(((r_th - w_fade) / (r_max - w_fade)) * fade_speed, 1.0f);
-            _logoSprite.setColor(sf::Color(255, 255, 255, alpha * 255));
+            sf::Color whiteColor(255, 255, 255, alpha * 255);
+            sf::Color blackColor(0, 0, 0, alpha * 255);
+            _logoSprite.setColor(whiteColor);
+            _logoName.setFillColor(blackColor);
             _window->draw(_logoSprite);
+            _window->draw(_logoName);
         }
     }
 

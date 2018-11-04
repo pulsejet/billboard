@@ -5,7 +5,7 @@
 #include <string>
 
 #define CURL_TIMEOUT 10
-#define LOGO_SCALE 0.6f
+#define LOGO_SCALE 0.3f
 
 #define CONFIG_PATH "config.json"
 
@@ -23,6 +23,7 @@
 #define K_ANIMATION_ENABLED "animation_enabled"
 #define K_EVENT_ANIMATION_SPEED "animation_speed"
 
+#define K_LOGO_NAME "logo_name"
 #define K_LOGO_ANIM_SPEED "logo_anim_speed"
 #define K_LOGO_REPEAT_DELAY "logo_repeat_delay"
 #define K_LOGO_SHOW_DURATION "logo_show_duration"

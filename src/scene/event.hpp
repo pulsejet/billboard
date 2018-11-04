@@ -34,9 +34,12 @@ class EventScene : public Scene {
     /** Other sprites */
     sf::Texture _progressTexture;
     sf::Sprite _progressSprite;
+
+    /** Logo */
     sf::CircleShape _logoCircle;
     sf::Texture _logoTexture;
     sf::Sprite _logoSprite;
+    sf::Text _logoName;
 
     /** Main texts */
     sf::Text _eventNameText;
