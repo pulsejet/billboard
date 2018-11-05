@@ -39,6 +39,8 @@ class EventScene : public Scene {
     sf::CircleShape _logoCircle;
     sf::Texture _logoTexture;
     sf::Sprite _logoSprite;
+    sf::Texture _logoWnccTexture;
+    sf::Sprite _logoWnccSprite;
     sf::Text _logoName;
     sf::Text _logoSuper;
 

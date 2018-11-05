@@ -9,5 +9,6 @@ DEFINE_ASSET(roboto_light_ttf)
 DEFINE_ASSET(roboto_ttf)
 DEFINE_ASSET(progress_png)
 DEFINE_ASSET(logo_png)
+DEFINE_ASSET(logo_wncc_png)
 
 #endif
