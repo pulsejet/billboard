@@ -46,7 +46,7 @@ make CXXFLAGS="-O3 -Wno-psabi"
 ```
 
 ## Configuration
-See [config.json](config.json) for a sample configuration. For documentation, check [src/config.hpp](src/config.hpp).
+See [assets/config.json](assets/config.json) for the default configuration. You may change one or more values by having the file `config.json` with relevant keys in your working directory when you run billboard. For documentation, check [src/config.hpp](src/config.hpp).
 
 ## License
 All code is licensed under the Apache License v2.
