@@ -64,23 +64,23 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
 
     /* Define gradient vertex array */
     #define DEF_VERX(x, y, color) _overlayGrad.push_back(sf::Vertex(sf::Vector2f(x, y), color))
-    DEF_VERX(0, cfg->getI(K_WINDOW_HEIGHT) * 0.55, sf::Color::Transparent);
-    DEF_VERX(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT) * 0.55, sf::Color::Transparent);
+    DEF_VERX(0, cfg->getI(K_H) * 0.55, sf::Color::Transparent);
+    DEF_VERX(cfg->getI(K_W), cfg->getI(K_H) * 0.55, sf::Color::Transparent);
 
-    DEF_VERX(0, cfg->getI(K_WINDOW_HEIGHT) * 0.75, sf::Color::Black);
-    DEF_VERX(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT) * 0.75, sf::Color::Black);
+    DEF_VERX(0, cfg->getI(K_H) * 0.75, sf::Color::Black);
+    DEF_VERX(cfg->getI(K_W), cfg->getI(K_H) * 0.75, sf::Color::Black);
 
-    DEF_VERX(0, cfg->getI(K_WINDOW_HEIGHT), sf::Color::Black);
-    DEF_VERX(cfg->getI(K_WINDOW_WIDTH), cfg->getI(K_WINDOW_HEIGHT), sf::Color::Black);
+    DEF_VERX(0, cfg->getI(K_H), sf::Color::Black);
+    DEF_VERX(cfg->getI(K_W), cfg->getI(K_H), sf::Color::Black);
     #undef DEF_VERX
 
     /* Initialize texts */
     makeText(cfg, &_eventNameText, &_font, 1/18.0);
     _eventNameText.setStyle(sf::Text::Bold);
-    _eventNameText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) * (13.0 / 18.0));
+    _eventNameText.setPosition(cfg->getI(K_W) / 18.0, cfg->getI(K_H) * (13.0 / 18.0));
 
     makeText(cfg, &_eventTimeText, &_font, 1/22.0);
-    _eventTimeText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) * (35.0 / 44.0));
+    _eventTimeText.setPosition(cfg->getI(K_W) / 18.0, cfg->getI(K_H) * (35.0 / 44.0));
 
     /* Load spinner */
     _progressSprite = makeProgressSprite(cfg, &_progressTexture);
@@ -100,7 +100,7 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     const float w_bias = getMinDim(cfg) * 0.04f;
     centerScreen(cfg, &_logoSprite);
     originRL(&_logoWnccSprite);
-    _logoWnccSprite.setPosition(cfg->getI(K_WINDOW_WIDTH) - w_bias, cfg->getI(K_WINDOW_HEIGHT) - w_bias);
+    _logoWnccSprite.setPosition(cfg->getI(K_W) - w_bias, cfg->getI(K_H) - w_bias);
 
     /* Logo text positions */
     const float ns_bias = _logoSprite.getGlobalBounds().height / 1.7f;
@@ -191,7 +191,7 @@ void EventScene::drawLogo() {
 
     /* Show circle using linear interpolation */
     if (t > ts) {
-        const float w = cfg->getI(K_WINDOW_WIDTH);
+        const float w = cfg->getI(K_W);
         const float r_th = ((T / 2) - std::abs((t - ts) - (T / 2))) * w * v;
         const float r_max = (T / 2) * w * v;
         const float r = std::min(r_th, w * 2);

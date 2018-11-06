@@ -40,7 +40,7 @@ void Animation::animate() {
     /* Left-center-right */
     if (has_lcr) {
         const float x = ((float) (_clock->getElapsedTime().asMilliseconds() % lcr_duration)) / ((float) lcr_duration);
-        finalX += cfg->getI(K_WINDOW_WIDTH) * pow(0.5, lcr_exponent) * pow(4 * (x - 0.5), lcr_exponent);
+        finalX += cfg->getI(K_W) * pow(0.5, lcr_exponent) * pow(4 * (x - 0.5), lcr_exponent);
     }
 
     /* Spin */

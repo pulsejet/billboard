@@ -14,8 +14,8 @@ void scaleCenterSpriteFull(
     float sx = image.getSize().x;
     float sy = image.getSize().y;
 
-    float scaleFactorY = ((float) cfg->getI(K_WINDOW_HEIGHT) / sy);
-    float scaleFactorX = ((float) cfg->getI(K_WINDOW_WIDTH) / sx);
+    float scaleFactorY = ((float) cfg->getI(K_H) / sy);
+    float scaleFactorX = ((float) cfg->getI(K_W) / sx);
 
     float scaleFactor = 1.0;
 
@@ -25,7 +25,7 @@ void scaleCenterSpriteFull(
         scaleFactor = scaleFactorY * maxHeight;
     }
 
-    float xTransform = ((float) cfg->getI(K_WINDOW_WIDTH) - sx * scaleFactor) / 2.0;
+    float xTransform = ((float) cfg->getI(K_W) - sx * scaleFactor) / 2.0;
     sprite.setScale(scaleFactor, scaleFactor);
     sprite.setPosition(xTransform, 0);
 }
@@ -54,7 +54,7 @@ void originRL(sf::Text * obj) ORIGIN_RL;
 
 /** Set position to center screen (requires origin at center) */
 #define CENTER_SCREEN {\
-    obj->setPosition(cfg->getI(K_WINDOW_WIDTH) / 2.0 + x, cfg->getI(K_WINDOW_HEIGHT) / 2.0 + y);\
+    obj->setPosition(cfg->getI(K_W) / 2.0 + x, cfg->getI(K_H) / 2.0 + y);\
 }
 
 void centerScreen(Config * cfg, sf::Sprite * obj, float x, float y) CENTER_SCREEN;

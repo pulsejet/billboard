@@ -4,13 +4,16 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+/* Compile time constants */
 #define BILLBOARD_VERSION "1.0.0"
 
 #define CURL_TIMEOUT 10
 #define LOGO_SCALE 0.3f
 
+/* Config path */
 #define CONFIG_PATH "config.json"
 
+/* Key definitions */
 #define K_LOCATION "location"
 
 #define K_WINDOW_WIDTH "window_width"
@@ -33,6 +36,10 @@
 #define K_LOGO_REPEAT_DELAY "logo_repeat_delay"
 #define K_LOGO_SHOW_DURATION "logo_show_duration"
 #define K_LOGO_FADE_SPEED "logo_fade_speed"
+
+/* Short key definitions */
+#define K_W "window_width"
+#define K_H "window_height"
 
 class Config {
     private:

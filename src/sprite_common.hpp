@@ -11,7 +11,7 @@
     if (texture->loadFromMemory(&asset, asset##_len)) {\
         texture->setSmooth(true);\
         sprite.setTexture(*texture);\
-        const float scaling = (cfg->getI(K_WINDOW_HEIGHT) / (float) sprite.getGlobalBounds().height) * (height_scale);\
+        const float scaling = (cfg->getI(K_H) / (float) sprite.getGlobalBounds().height) * (height_scale);\
         sprite.setScale(scaling, scaling);\
         if (center_origin) {\
             sprite.setOrigin(texture->getSize().x / 2.0, texture->getSize().y / 2.0);\
@@ -20,7 +20,7 @@
 
 inline sf::Sprite makeProgressSprite(Config * cfg, sf::Texture * texture) {
     MAKE_SPRITE(progress_png, 0.1, true)
-    sprite.setPosition(cfg->getI(K_WINDOW_WIDTH) * 0.85, cfg->getI(K_WINDOW_HEIGHT) * 0.85);
+    sprite.setPosition(cfg->getI(K_W) * 0.85, cfg->getI(K_H) * 0.85);
     return sprite;
 }
 
@@ -43,7 +43,7 @@ inline void makeText(
     sf::Color fillColor=sf::Color::White
 ) {
     text->setFont(*font);
-    text->setCharacterSize(cfg->getI(K_WINDOW_HEIGHT) * height_frac);
+    text->setCharacterSize(cfg->getI(K_H) * height_frac);
     text->setFillColor(fillColor);
     if (str != "") {
         text->setString(str);

@@ -51,7 +51,7 @@ inline uint64_t slash_hash(const char *s)
 
 /** Get minimum dimension of screen */
 inline int getMinDim(Config * cfg) {
-    return std::min(cfg->getI(K_WINDOW_HEIGHT), cfg->getI(K_WINDOW_WIDTH));
+    return std::min(cfg->getI(K_H), cfg->getI(K_W));
 }
 
 /** Convert date string to tm object */

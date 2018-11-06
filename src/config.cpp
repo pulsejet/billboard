@@ -8,12 +8,12 @@ Config::Config() {
     ifs.close();
 
     /* Set fallbacks for width and height */
-    if (this->getI(K_WINDOW_WIDTH) == 0) {
-        conf[K_WINDOW_WIDTH] = sf::VideoMode::getDesktopMode().width;
+    if (this->getI(K_W) == 0) {
+        conf[K_W] = sf::VideoMode::getDesktopMode().width;
     }
 
-    if (this->getI(K_WINDOW_HEIGHT) == 0) {
-        conf[K_WINDOW_HEIGHT] = sf::VideoMode::getDesktopMode().height;
+    if (this->getI(K_H) == 0) {
+        conf[K_H] = sf::VideoMode::getDesktopMode().height;
     }
 }
 
