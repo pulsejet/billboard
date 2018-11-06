@@ -125,6 +125,9 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     if (cfg->getI(K_ANIMATION_ENABLED)) {
         _bigSpriteAnim = new Animation(cfg, &_currentBigSprite, &_clock);
         _bigSpriteAnim->set_lcr(cfg->getI(K_TIME_DELAY) * 1000, cfg->getI(K_EVENT_ANIMATION_SPEED));
+
+        _progressAnim = new Animation(cfg, &_progressSprite, &_refresh_clock);
+        _progressAnim->set_spin(75);
     }
 }
 
@@ -266,13 +269,14 @@ void EventScene::paint() {
 
     /* Show spinner while refreshing */
     if (refreshing) {
+        _progressAnim->animate();
         _window->draw(_progressSprite);
-        _progressSprite.setRotation(_refresh_clock.getElapsedTime().asSeconds() * 450);
     }
 }
 
 EventScene::~EventScene() {
     delete _bigSpriteAnim;
+    delete _progressAnim;
 
     if (_bgThread) {
         _bgThread->join();

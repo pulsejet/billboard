@@ -26,19 +26,32 @@ void Animation::set_lcr(int duration, int speed) {
     lcr_exponent = 2 * speed - 1;
 }
 
+void Animation::set_spin(int rpm) {
+    has_spin = true;
+    spin_deg = ((float) rpm) * 6.0;
+}
+
 void Animation::animate() {
     if (!_clock || !_sprite) return;
 
     int finalX = _baseX;
     int finalY = _baseY;
 
-    // Left-center-right
+    /* Left-center-right */
     if (has_lcr) {
         const float x = ((float) (_clock->getElapsedTime().asMilliseconds() % lcr_duration)) / ((float) lcr_duration);
         finalX += cfg->getI(K_WINDOW_WIDTH) * pow(0.5, lcr_exponent) * pow(4 * (x - 0.5), lcr_exponent);
     }
 
-    _sprite->setPosition(finalX, finalY);
+    /* Spin */
+    if (has_spin) {
+        _sprite->setRotation(_clock->getElapsedTime().asSeconds() * spin_deg);
+    }
+
+    /* Update position for specific animations */
+    if (has_lcr) {
+        _sprite->setPosition(finalX, finalY);
+    }
 }
 
 AnimationGroup::AnimationGroup(Config * config, std::vector<sf::Transformable*> sprites, sf::Clock * _clock) {

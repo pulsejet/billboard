@@ -9,13 +9,20 @@ class Animation {
     private:
     sf::Transformable * _sprite;
 
+    /* Initial/final coordinates */
     int _baseX;
     int _baseY;
 
+    /* Left-center-right */
     bool has_lcr = false;
     int lcr_duration;
     int lcr_exponent;
 
+    /* Spinning */
+    bool has_spin = false;
+    int spin_deg;
+
+    /* Animation Clock */
     sf::Clock * _clock;
 
     Config * cfg;
@@ -32,6 +39,9 @@ class Animation {
         int duration,
         int speed
     );
+
+    /** Spin sprite continuously about it's current origin */
+    void set_spin(int rpm);
 
     /** Carry out all animations */
     void animate();

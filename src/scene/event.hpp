@@ -31,9 +31,10 @@ class EventScene : public Scene {
 
     std::vector<sf::Vertex> _overlayGrad;
 
-    /** Other sprites */
+    /** Progress spinner */
     sf::Texture _progressTexture;
     sf::Sprite _progressSprite;
+    Animation * _progressAnim;
 
     /** Logo */
     sf::CircleShape _logoCircle;
