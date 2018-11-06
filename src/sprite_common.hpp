@@ -34,4 +34,20 @@ inline sf::Sprite makeWnccLogoSprite(Config * cfg, sf::Texture * texture) {
     return sprite;
 }
 
+inline void makeText(
+    Config * cfg,
+    sf::Text * text,
+    sf::Font * font,
+    float height_frac,
+    std::string str="",
+    sf::Color fillColor=sf::Color::White
+) {
+    text->setFont(*font);
+    text->setCharacterSize(cfg->getI(K_WINDOW_HEIGHT) * height_frac);
+    text->setFillColor(fillColor);
+    if (str != "") {
+        text->setString(str);
+    }
+}
+
 #endif

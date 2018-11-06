@@ -75,19 +75,12 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     #undef DEF_VERX
 
     /* Initialize texts */
-    float height = cfg->getI(K_WINDOW_HEIGHT) / 18.0;
-    _eventNameText.setFont(_font);
-
-    _eventNameText.setCharacterSize(height);
-    _eventNameText.setFillColor(sf::Color::White);
+    makeText(cfg, &_eventNameText, &_font, 1/18.0);
     _eventNameText.setStyle(sf::Text::Bold);
-    _eventNameText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) - height * 5);
+    _eventNameText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) * (13.0 / 18.0));
 
-    height = cfg->getI(K_WINDOW_HEIGHT) / 22.0;
-    _eventTimeText.setFont(_font);
-    _eventTimeText.setCharacterSize(height);
-    _eventTimeText.setFillColor(sf::Color::White);
-    _eventTimeText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) - height * 4.5);
+    makeText(cfg, &_eventTimeText, &_font, 1/22.0);
+    _eventTimeText.setPosition(cfg->getI(K_WINDOW_WIDTH) / 18.0, cfg->getI(K_WINDOW_HEIGHT) * (35.0 / 44.0));
 
     /* Load spinner */
     _progressSprite = makeProgressSprite(cfg, &_progressTexture);
@@ -100,13 +93,8 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     _logoWnccSprite = makeWnccLogoSprite(cfg, &_logoWnccTexture);
 
     /* Logo texts */
-    _logoName.setFont(_font);
-    _logoName.setCharacterSize(cfg->getI(K_WINDOW_HEIGHT) / 20.0);
-    _logoName.setString(cfg->getS(K_LOGO_NAME));
-
-    _logoSuper.setFont(_font);
-    _logoSuper.setCharacterSize(cfg->getI(K_WINDOW_HEIGHT) / 32.0);
-    _logoSuper.setString(cfg->getS(K_LOGO_SUPER));
+    makeText(cfg, &_logoName, &_font, 1/20.0, cfg->getS(K_LOGO_NAME), sf::Color::Black);
+    makeText(cfg, &_logoSuper, &_font, 1/32.0, cfg->getS(K_LOGO_SUPER), sf::Color::Black);
 
     /* Setup logo sprites position and scale */
     const float w_bias = getMinDim(cfg) * 0.04f;
