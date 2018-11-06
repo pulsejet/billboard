@@ -275,7 +275,7 @@ void EventScene::paint() {
     /* Show spinner while refreshing */
     if (refreshing) {
         _window->draw(_progressSprite);
-        _progressSprite.setRotation(_clock.getElapsedTime().asSeconds() * 450);
+        _progressSprite.setRotation(_refresh_clock.getElapsedTime().asSeconds() * 450);
     }
 }
 
