@@ -5,7 +5,7 @@
 #include "assets.h"
 #include "config.hpp"
 
-/** Load sprite for progress spinner */
+/* Helper */
 #define MAKE_SPRITE(asset, height_scale, center_origin) \
     sf::Sprite sprite; \
     if (texture->loadFromMemory(&asset, asset##_len)) {\
@@ -18,22 +18,26 @@
         }\
     }
 
+/** Load sprite for progress spinner */
 inline sf::Sprite makeProgressSprite(Config * cfg, sf::Texture * texture) {
     MAKE_SPRITE(progress_png, 0.1, true)
     sprite.setPosition(cfg->getI(K_W) * 0.85, cfg->getI(K_H) * 0.85);
     return sprite;
 }
 
+/** Make sprite for main InstiApp logo */
 inline sf::Sprite makeLogoSprite(Config * cfg, sf::Texture * texture) {
     MAKE_SPRITE(logo_png, LOGO_SCALE, true)
     return sprite;
 }
 
+/** Make sprite for WnCC logo */
 inline sf::Sprite makeWnccLogoSprite(Config * cfg, sf::Texture * texture) {
     MAKE_SPRITE(logo_wncc_png, LOGO_SCALE / 3.8f, false);
     return sprite;
 }
 
+/** Fill up a sf::Text object with parameters in one line */
 inline void makeText(
     Config * cfg,
     sf::Text * text,
