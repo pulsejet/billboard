@@ -5,6 +5,7 @@
     extern unsigned char X[]; \
     extern unsigned int X##_len;
 
+DEFINE_ASSET(config_json)
 DEFINE_ASSET(roboto_light_ttf)
 DEFINE_ASSET(roboto_ttf)
 DEFINE_ASSET(progress_png)

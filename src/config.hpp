@@ -44,6 +44,7 @@
 class Config {
     private:
     nlohmann::json conf;
+    nlohmann::json default_conf;
 
     public:
     Config();

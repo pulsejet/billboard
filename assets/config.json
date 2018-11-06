@@ -1,9 +1,9 @@
 {
     "location": "IITB",
 
-    "window_width": 1366,
-    "window_height": 768,
-    "fullscreen": false,
+    "window_width": 0,
+    "window_height": 0,
+    "fullscreen": true,
     "window_title": "InstiApp Billboard",
     "time_delay": 6,
     "url_events": "https://gymkhana.iitb.ac.in/instiapp/events.json",
