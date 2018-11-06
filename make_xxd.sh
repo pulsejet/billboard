@@ -1,8 +1,13 @@
 #!/bin/bash
 mkdir -p src/xxd
 cd assets
-for f in *
+for file in *
 do
-   echo "Dumping $f"
-   xxd -i $f > ../src/xxd/$f.cpp
+    out="../src/xxd/$file.cpp"
+    if [[ (! -f $out ) || ($file -nt $out) ]]; then
+        echo "Dumping $file"
+        xxd -i $file > $out;
+    fi
 done
+
+echo "xxd dumped!"
