@@ -27,9 +27,8 @@ void EventScene::loadBigImage(Event event) {
 }
 
 /** Refresh events from network */
-void refreshEvents(const EventScene * scene) {
-    Config config;
-    Data data(&config);
+void refreshEvents(Config * cfg, const EventScene * scene) {
+    Data data(cfg);
     auto loaded = data.getEvents();
     print_time();
     scene->refreshing = false;
@@ -55,7 +54,7 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     _window = window;
 
     /* Get the events */
-    _bgThread = new std::thread(refreshEvents, this);
+    _bgThread = new std::thread(refreshEvents, cfg, this);
 
     /* Load font */
     if (!_font.loadFromMemory(&roboto_light_ttf, roboto_light_ttf_len)) {
@@ -176,7 +175,7 @@ void EventScene::choreRefresh() {
     /* Check on the condition again just to be sure */
     if (_refresh_clock.getElapsedTime().asSeconds() > cfg->getI(K_REFRESH_DURATION)) {
         refreshing = true;
-        _bgThread = new std::thread(refreshEvents, this);
+        _bgThread = new std::thread(refreshEvents, cfg, this);
         _refresh_clock.restart();
     }
 }
