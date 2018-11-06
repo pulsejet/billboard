@@ -96,12 +96,8 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     _logoCircle.setFillColor(sf::Color::White);
     _logoCircle.setPointCount(100);
     _logoCircle.setPosition(0, 0);
-    _logoTexture.loadFromMemory(&logo_png, logo_png_len);
-    _logoTexture.setSmooth(true);
-    _logoSprite.setTexture(_logoTexture);
-    _logoWnccTexture.loadFromMemory(&logo_wncc_png, logo_wncc_png_len);
-    _logoWnccTexture.setSmooth(true);
-    _logoWnccSprite.setTexture(_logoWnccTexture);
+    _logoSprite = makeLogoSprite(cfg, &_logoTexture);
+    _logoWnccSprite = makeWnccLogoSprite(cfg, &_logoWnccTexture);
 
     /* Logo texts */
     _logoName.setFont(_font);
@@ -113,21 +109,17 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
     _logoSuper.setString(cfg->getS(K_LOGO_SUPER));
 
     /* Setup logo sprites position and scale */
-    const int min_dim = std::min(cfg->getI(K_WINDOW_HEIGHT), cfg->getI(K_WINDOW_WIDTH));
-    const float scale = LOGO_SCALE * cfg->getI(K_WINDOW_HEIGHT) / _logoSprite.getGlobalBounds().height;
-    originCenter(&_logoSprite);
+    const float w_bias = getMinDim(cfg) * 0.04f;
     centerScreen(cfg, &_logoSprite);
-    _logoSprite.setScale(scale, scale);
-
-    _logoWnccSprite.setOrigin(_logoWnccSprite.getGlobalBounds().width, _logoWnccSprite.getGlobalBounds().height);
-    _logoWnccSprite.setScale(scale / 1.8f, scale / 1.8f);
-    _logoWnccSprite.setPosition(cfg->getI(K_WINDOW_WIDTH) - min_dim * 0.04f, cfg->getI(K_WINDOW_HEIGHT) - min_dim * 0.04f);
+    originRL(&_logoWnccSprite);
+    _logoWnccSprite.setPosition(cfg->getI(K_WINDOW_WIDTH) - w_bias, cfg->getI(K_WINDOW_HEIGHT) - w_bias);
 
     /* Logo text positions */
+    const float ns_bias = _logoSprite.getGlobalBounds().height / 1.7f;
     originCenter(&_logoName);
     originCenter(&_logoSuper);
-    centerScreen(cfg, &_logoName, 0, _logoSprite.getGlobalBounds().height / 1.7f);
-    centerScreen(cfg, &_logoSuper, 0, -_logoSprite.getGlobalBounds().height / 1.7f);
+    centerScreen(cfg, &_logoName, 0, ns_bias);
+    centerScreen(cfg, &_logoSuper, 0, -ns_bias);
 
     /* Initialize animation */
     if (cfg->getI(K_ANIMATION_ENABLED)) {

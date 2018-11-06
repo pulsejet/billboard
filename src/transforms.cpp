@@ -32,7 +32,7 @@ void scaleCenterSpriteFull(
 
 /** Set origin to center */
 #define ORIGIN_CENTER {\
-    const auto bounds = obj->getGlobalBounds();\
+    const auto bounds = obj->getLocalBounds();\
     obj->setOrigin(bounds.width / 2, bounds.height / 2);\
 }
 
@@ -40,6 +40,17 @@ void originCenter(sf::Sprite * obj) ORIGIN_CENTER;
 void originCenter(sf::Text * obj) ORIGIN_CENTER;
 
 #undef ORIGIN_CENTER
+
+/** Set origin to right lower corner */
+#define ORIGIN_RL {\
+    const auto bounds = obj->getLocalBounds();\
+    obj->setOrigin(bounds.width, bounds.height);\
+}
+
+void originRL(sf::Sprite * obj) ORIGIN_RL;
+void originRL(sf::Text * obj) ORIGIN_RL;
+
+#undef ORIGIN_RL
 
 /** Set position to center screen (requires origin at center) */
 #define CENTER_SCREEN {\

@@ -16,6 +16,10 @@ void scaleCenterSpriteFull(
 void originCenter(sf::Sprite * obj);
 void originCenter(sf::Text * obj);
 
+/** Set origin to right lower corner */
+void originRL(sf::Sprite * obj);
+void originRL(sf::Text * obj);
+
 /** Set position to center screen (requires origin at center) */
 void centerScreen(Config * cfg, sf::Sprite * obj);
 void centerScreen(Config * cfg, sf::Text * obj);
