@@ -46,7 +46,7 @@ make CXXFLAGS="-O3 -Wno-psabi"
 ```
 
 ## Configuration
-See [config.json](config.json) for a sample configuration. For documentation, check [src/config.cpp](src/config.cpp).
+See [config.json](config.json) for a sample configuration. For documentation, check [src/config.hpp](src/config.hpp).
 
 ## License
 All code is licensed under the Apache License v2.
