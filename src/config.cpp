@@ -10,6 +10,9 @@ Config::Config() {
         std::ifstream ifs(CONFIG_PATH);
         conf = nlohmann::json::parse(ifs);
         ifs.close();
+
+        print_time();
+        std::cout << "Loaded configuration from " << CONFIG_PATH << std::endl;
     }
 
     /* Load default config as an asset */
