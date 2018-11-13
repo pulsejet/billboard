@@ -1,6 +1,8 @@
 # Billboard
 Digital billboard for [WnCC](https://github.com/wncc)'s InstiApp in SFML
 
+[![InstiApp](https://insti.app/instiapp-badge-gh.svg)](https://insti.app)
+
 ## Dependencies
 The package depends on SFML (2.5+), CURL (with OpenSSL binaries required for HTTPS requests) and `nlohmann::json`.
 
