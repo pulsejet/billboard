@@ -120,7 +120,8 @@ void EventScene::create(Config * config, sf::RenderWindow * window) {
 
 /** Return if the event is valid to display on big screen */
 bool is_valid(Config * cfg, Event& event) {
-    return event.imageUrl != STRING_EMPTY &&
+    return (event.imageUrl != STRING_EMPTY ||
+            event.bodies[0].imageUrl != STRING_EMPTY) &&
            event.weight > cfg->getI(K_WEIGHT_THRESHOLD);
 }
 

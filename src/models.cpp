@@ -16,6 +16,11 @@ Body::Body(Config * cfg, nlohmann::json json) {
     } else {
         imageUrl = STRING_EMPTY;
     }
+
+    // Save filename
+    if (imageUrl != STRING_EMPTY) {
+        imageFileName = imageFilename(cfg, imageUrl);
+    }
 }
 
 Event::Event(Config * cfg, nlohmann::json json) {

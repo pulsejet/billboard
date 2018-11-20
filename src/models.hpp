@@ -12,6 +12,7 @@ struct Body {
     std::string strId;
     std::string name;
     std::string short_description;
+    std::string imageFileName;
     std::string imageUrl;
 
     Body(Config * cfg, nlohmann::json json);

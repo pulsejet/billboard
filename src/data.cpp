@@ -36,7 +36,21 @@ std::vector<Event> Data::getEvents() {
             if (file_exists(event.imageFileName) || requestImage(cfg, event.imageUrl)) {
                 event.bigImage.loadFromFile(event.imageFileName);
             } else {
+                /* Set event image url to blank */
                 event.imageUrl = STRING_EMPTY;
+            }
+        }
+
+        /* Do NOT refactor this to an else condition, cause it isn't
+         * one. If the image url is set to blank artificially,
+         * this will cause the event to fall back to the body image */
+        if (event.imageUrl == STRING_EMPTY && event.bodies[0].imageUrl != STRING_EMPTY) {
+            /* Load body image for fallback */
+            if (file_exists(event.bodies[0].imageFileName) || requestImage(cfg, event.bodies[0].imageUrl)) {
+                event.bigImage.loadFromFile(event.bodies[0].imageFileName);
+            } else {
+                /* Failed to find anything! */
+                event.bodies[0].imageUrl = STRING_EMPTY;
             }
         }
 
