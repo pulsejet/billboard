@@ -14,6 +14,11 @@ Data::Data(Config * config) {
     cfg = config;
 }
 
+void deleteFile(std::string path) {
+    std::cout << "Deleting file " << path << std::endl;
+    std::remove(path.c_str());
+}
+
 /** Get list of all events from API */
 std::vector<Event> Data::getEvents() {
     std::vector<Event> eventVector;
@@ -34,7 +39,13 @@ std::vector<Event> Data::getEvents() {
         /* Load image_url for the event */
         if (event.imageUrl != STRING_EMPTY) {
             if (file_exists(event.imageFileName) || requestImage(cfg, event.imageUrl)) {
-                event.bigImage.loadFromFile(event.imageFileName);
+                bool success = event.bigImage.loadFromFile(event.imageFileName);
+
+                /* Check if the image loaded sucessfully */
+                if (!success) {
+                    deleteFile(event.imageFileName);
+                    event.imageUrl = STRING_EMPTY;
+                }
             } else {
                 /* Set event image url to blank */
                 event.imageUrl = STRING_EMPTY;
@@ -45,12 +56,22 @@ std::vector<Event> Data::getEvents() {
          * one. If the image url is set to blank artificially,
          * this will cause the event to fall back to the body image */
         if (event.imageUrl == STRING_EMPTY && event.bodies[0].imageUrl != STRING_EMPTY) {
+            /* Body constants to fallback to */
+            Body body = event.bodies[0];
+            const std::string filename = body.imageFileName;
+
             /* Load body image for fallback */
-            if (file_exists(event.bodies[0].imageFileName) || requestImage(cfg, event.bodies[0].imageUrl)) {
-                event.bigImage.loadFromFile(event.bodies[0].imageFileName);
+            if (file_exists(filename) || requestImage(cfg, body.imageUrl)) {
+                bool success = event.bigImage.loadFromFile(filename);
+
+                /* Check if the image loaded sucessfully */
+                if (!success) {
+                    deleteFile(filename);
+                    body.imageUrl = STRING_EMPTY;
+                }
             } else {
                 /* Failed to find anything! */
-                event.bodies[0].imageUrl = STRING_EMPTY;
+                body.imageUrl = STRING_EMPTY;
             }
         }
 
