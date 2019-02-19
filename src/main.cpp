@@ -22,8 +22,10 @@ int main()
     /* Initialize data client */
     data_global_init();
 
+    /* Prevent tearing on some devices */
     window->setVerticalSyncEnabled(true);
 
+    /* Loop till we are wanted dead */
     while (window->isOpen())
     {
         sf::Event event;
