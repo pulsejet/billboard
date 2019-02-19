@@ -22,7 +22,6 @@ int main()
     /* Initialize data client */
     data_global_init();
 
-    //window->setFramerateLimit(30);
     window->setVerticalSyncEnabled(true);
 
     while (window->isOpen())
