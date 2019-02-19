@@ -43,13 +43,13 @@ inline void makeText(
     sf::Text * text,
     sf::Font * font,
     float height_frac,
-    std::string str="",
+    std::string str = STRING_EMPTY,
     sf::Color fillColor=sf::Color::White
 ) {
     text->setFont(*font);
     text->setCharacterSize(cfg->getI(K_H) * height_frac);
     text->setFillColor(fillColor);
-    if (str != "") {
+    if (str != STRING_EMPTY) {
         text->setString(str);
     }
 }
