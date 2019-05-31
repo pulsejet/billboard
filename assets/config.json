@@ -6,7 +6,7 @@
     "fullscreen": true,
     "window_title": "InstiApp Billboard",
     "time_delay": 6,
-    "url_events": "https://gymkhana.iitb.ac.in/instiapp/events.json",
+    "url_events": "https://insti.app/api/events",
     "images_dir": "images/",
     "cache_dir": "cache/",
     "refresh_duration": 20,
@@ -20,5 +20,7 @@
     "logo_repeat_delay": 60,
     "logo_show_duration": 8,
     "logo_anim_speed": 3,
+
     "logo_fade_speed": 4
 }
+

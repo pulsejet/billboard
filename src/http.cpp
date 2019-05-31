@@ -90,7 +90,7 @@ std::unique_ptr<std::string> requestStr(Config * cfg, std::string url) {
 
     // Response information.
     int httpCode(0);
-    std::unique_ptr<std::string> httpData(new std::string());
+    std::string httpData = std::string();
 
     // Hook up data handling function.
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback);
@@ -98,7 +98,7 @@ std::unique_ptr<std::string> requestStr(Config * cfg, std::string url) {
     // Hook up data container (will be passed as the last parameter to the
     // callback handling function).  Can be any pointer type, since it will
     // internally be passed as a void pointer.
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, httpData.get());
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_perform(curl);
@@ -115,11 +115,11 @@ std::unique_ptr<std::string> requestStr(Config * cfg, std::string url) {
     if (httpCode == 200) {
         // Cache response
         std::ofstream outs(cachefile);
-        outs << *httpData.get();
+        outs << httpData;
         outs.close();
 
         // Return for further processing
-        return httpData;
+        return std::unique_ptr<std::string>(new std::string(httpData));
     } else if (file_exists(cachefile)) {
         // Fallback to cache if it exists
         std::ifstream ifs(cachefile);
