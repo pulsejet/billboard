@@ -71,6 +71,15 @@ bool requestImage(Config * cfg, std::string url) {
     // Close the file
     fclose(fp);
 
+#ifdef __linux__
+    if (success) {
+        const int img_proc = system(("./process_image " + imageFilename(cfg, url)).c_str());
+        if (img_proc != 0) {
+            std::cerr << "Image processor returned exit code: " << img_proc << std::endl;
+        }
+    }
+#endif
+
     return success;
 }
 

@@ -1,0 +1,15 @@
+#!/usr/bin/python3
+import sys
+from os import path
+from PIL import Image
+
+filename = sys.argv[1]
+if not filename or not path.exists(filename):
+    print("Error opening", filename, file=sys.stderr)
+    exit(1)
+
+print("Deinterlacing", filename)
+image = Image.open(filename).convert('RGB')
+image.save(filename, 'JPEG', quality=100, optimize=False, progressive=False)
+exit(0)
+
